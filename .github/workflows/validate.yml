@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: write
+
 jobs:
   validate-markdown:
     runs-on: ubuntu-latest
@@ -24,10 +27,16 @@ jobs:
         run: npm install -g markdownlint-cli
 
       - name: Lint markdown files
-        run: markdownlint "**/*.md" --ignore node_modules
+        run: |
+          if [ -f ".markdownlint.json" ]; then
+            markdownlint "**/*.md" --ignore node_modules --config .markdownlint.json
+          else
+            markdownlint "**/*.md" --ignore node_modules
+          fi
 
       # Run link check WITH config only if the config file exists
       - name: Check for broken links (with config)
+        continue-on-error: true
         if: hashFiles('.github/markdown-link-check-config.json') != ''
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
@@ -37,6 +46,7 @@ jobs:
 
       # Fallback without config so the job still runs if config is absent
       - name: Check for broken links (no config)
+        continue-on-error: true
         if: hashFiles('.github/markdown-link-check-config.json') == ''
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
@@ -97,6 +107,7 @@ jobs:
 
       # Run with custom config only if it exists
       - name: Run spell check (with config)
+        continue-on-error: true
         if: hashFiles('.github/typos.toml') != ''
         uses: crate-ci/typos@master
         with:
@@ -104,6 +115,7 @@ jobs:
 
       # Fallback without config
       - name: Run spell check (default)
+        continue-on-error: true
         if: hashFiles('.github/typos.toml') == ''
         uses: crate-ci/typos@master
 

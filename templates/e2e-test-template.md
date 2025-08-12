@@ -3,12 +3,14 @@
 > Purpose: Provide a consistent, high-quality structure for planning and executing end-to-end tests.
 
 ## Overview
+
 - System/Feature under test:
 - Primary user journey:
 - Environments: [Dev | Staging | Prod]
 - Test type: [Smoke | Regression | Happy-path | Critical-path]
 
 ## Preconditions
+
 - Test data available: [Yes/No]
 - User roles/permissions:
 - Required integrations active (APIs, 3rd-party):
@@ -25,6 +27,7 @@ Describe high-level scenarios to cover the end-to-end flow.
 2. Scenario: [...]
 
 ## Detailed Steps (Example: Playwright)
+
 ```ts
 import { test, expect } from '@playwright/test';
 
@@ -46,24 +49,29 @@ test.describe('Checkout E2E', () => {
 ```
 
 ## Data and Fixtures
+
 - Seed data script/location:
 - Test users and roles:
 - Mock/stub strategy (if any):
 
 ## Assertions
+
 - UI assertions:
 - API/DB side-effects:
 - Analytics/telemetry events:
 
 ## Non-Functional Considerations
+
 - Performance SLAs (TTFB, LCP):
 - Accessibility checks:
 - Cross-browser/device coverage:
 
 ## Risks and Mitigations
+
 - Risk:
 - Mitigation:
 
 ## References
-- Related TRD: 
-- Related tickets: 
+
+- Related TRD:
+- Related tickets:

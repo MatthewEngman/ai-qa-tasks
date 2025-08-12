@@ -5,7 +5,7 @@ Use this template as a starting point for comprehensive API testing. Customize t
 ## API Information
 
 **API Name**: [API Name]  
-**Base URL**: [https://api.example.com/v1]  
+**Base URL**: `https://api.example.com/v1`  
 **Authentication**: [Bearer Token / API Key / OAuth2 / Basic Auth]  
 **Documentation**: [Link to API documentation]  
 **Version**: [v1.0]  

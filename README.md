@@ -178,7 +178,7 @@ Got ideas to improve these QA workflows or have new testing approaches? Contribu
 - [Testing Best Practices](https://testing-library.com/docs/guiding-principles/)
 - [Test Pyramid Concept](https://martinfowler.com/articles/practical-test-pyramid.html)
 - [Accessibility Testing Guide](https://www.w3.org/WAI/test-evaluate/)
-- [API Testing Strategies](https://assertible.com/blog/api-testing-best-practices)
+- [OWASP API Security Top 10](https://owasp.org/API-Security/)
 
 ---
 

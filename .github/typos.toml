@@ -1,0 +1,19 @@
+[default]
+extend-ignore-re = [
+  "(?i)todo",
+  "(?i)yaml",
+  "(?i)jest|cypress|playwright|vitest|mocha",
+]
+
+[files]
+extend-exclude = [
+  "**/node_modules/**",
+  "**/dist/**",
+]
+
+[default.extend-words]
+# Domain-specific words
+TRD = "TRD"
+Playwright = "Playwright"
+Supertest = "Supertest"
+Testcontainers = "Testcontainers"
