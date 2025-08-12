@@ -1,0 +1,160 @@
+name: Validate Repository
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-markdown:
+    runs-on: ubuntu-latest
+    name: Validate Markdown Files
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install markdown linter
+        run: npm install -g markdownlint-cli
+
+      - name: Lint markdown files
+        run: markdownlint "**/*.md" --ignore node_modules
+
+      - name: Check for broken links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'yes'
+          config-file: '.github/markdown-link-check-config.json'
+
+  validate-structure:
+    runs-on: ubuntu-latest
+    name: Validate Repository Structure
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate required files exist
+        run: |
+          # Check for core workflow files
+          test -f "create-trd.md" || (echo "Missing create-trd.md" && exit 1)
+          test -f "generate-test-strategy.md" || (echo "Missing generate-test-strategy.md" && exit 1)
+          test -f "generate-test-tasks.md" || (echo "Missing generate-test-tasks.md" && exit 1)
+          test -f "implement-test-task.md" || (echo "Missing implement-test-task.md" && exit 1)
+          test -f "generate-test-report.md" || (echo "Missing generate-test-report.md" && exit 1)
+          
+          # Check for documentation files
+          test -f "README.md" || (echo "Missing README.md" && exit 1)
+          test -f "QUICK_START.md" || (echo "Missing QUICK_START.md" && exit 1)
+          test -f "CONTRIBUTING.md" || (echo "Missing CONTRIBUTING.md" && exit 1)
+          
+          echo "✅ All required files present"
+
+      - name: Validate workflow file structure
+        run: |
+          # Check that each workflow file has required sections
+          for file in create-trd.md generate-test-strategy.md generate-test-tasks.md implement-test-task.md generate-test-report.md; do
+            echo "Validating $file..."
+            
+            # Check for role definition
+            grep -q "You are a" "$file" || (echo "Missing role definition in $file" && exit 1)
+            
+            # Check for usage instructions
+            grep -q -i "usage instructions" "$file" || (echo "Missing usage instructions in $file" && exit 1)
+            
+            echo "✅ $file structure valid"
+          done
+
+  spell-check:
+    runs-on: ubuntu-latest
+    name: Spell Check
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run spell check
+        uses: crate-ci/typos@master
+        with:
+          config: .github/typos.toml
+
+  validate-examples:
+    runs-on: ubuntu-latest
+    name: Validate Examples
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Validate JavaScript examples
+        run: |
+          # Find and validate JavaScript code blocks in markdown files
+          for file in $(find . -name "*.md" -not -path "./node_modules/*"); do
+            echo "Checking JavaScript syntax in $file..."
+            
+            # Extract JavaScript code blocks and validate syntax
+            awk '/```javascript/,/```/' "$file" | \
+            sed '/```/d' | \
+            node -c - 2>/dev/null || echo "⚠️  JavaScript syntax issues in $file"
+          done
+
+      - name: Validate code completeness
+        run: |
+          # Check that code examples are complete (have imports, proper structure)
+          for file in examples/*.md templates/*.md; do
+            if [ -f "$file" ]; then
+              echo "Validating code completeness in $file..."
+              
+              # Check for common patterns that indicate complete examples
+              if grep -q "```javascript" "$file"; then
+                grep -q "import\|require\|describe\|it\|test" "$file" || \
+                echo "⚠️  JavaScript examples in $file may be incomplete"
+              fi
+            fi
+          done
+
+  update-stats:
+    runs-on: ubuntu-latest
+    name: Update Repository Stats
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate repository statistics
+        run: |
+          echo "# Repository Statistics" > STATS.md
+          echo "" >> STATS.md
+          echo "Generated on: $(date)" >> STATS.md
+          echo "" >> STATS.md
+          echo "## File Counts" >> STATS.md
+          echo "- Workflow files: $(ls *.md | grep -E '(create-trd|generate-|implement-)' | wc -l)" >> STATS.md
+          echo "- Example files: $(find examples/ -name "*.md" 2>/dev/null | wc -l)" >> STATS.md
+          echo "- Template files: $(find templates/ -name "*.md" 2>/dev/null | wc -l)" >> STATS.md
+          echo "- Documentation files: $(find docs/ -name "*.md" 2>/dev/null | wc -l)" >> STATS.md
+          echo "" >> STATS.md
+          echo "## Content Analysis" >> STATS.md
+          echo "- Total lines of documentation: $(cat *.md | wc -l)" >> STATS.md
+          echo "- Code examples: $(grep -c '```' *.md)" >> STATS.md
+          echo "- Testing frameworks mentioned: $(grep -i -o 'jest\|cypress\|playwright\|vitest\|mocha' *.md | sort -u | wc -l)" >> STATS.md
+
+      - name: Commit statistics
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add STATS.md
+          git diff --staged --quiet || git commit -m "Update repository statistics [skip ci]"
+          git push
