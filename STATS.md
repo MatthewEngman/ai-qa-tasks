@@ -1,6 +1,6 @@
 # Repository Statistics
 
-Generated on: Tue Aug 12 23:56:41 UTC 2025
+Generated on: Tue Aug 12 23:58:50 UTC 2025
 
 ## File Counts
 - Workflow files: 5
@@ -10,13 +10,13 @@ Generated on: Tue Aug 12 23:56:41 UTC 2025
 
 ## Content Analysis
 - Total lines of documentation: 2702
-- Code examples: README.md:185
-STATS.md:12
-contributing-guide.md:264
-create-trd-md.md:188
-generate-test-report-md.md:441
-generate-test-strategy-md.md:292
-generate-test-tasks-md.md:505
-implement-test-task-md.md:639
-quick-start-guide.md:184
+- Code examples: README.md:14
+STATS.md:0
+contributing-guide.md:12
+create-trd-md.md:2
+generate-test-report-md.md:32
+generate-test-strategy-md.md:2
+generate-test-tasks-md.md:2
+implement-test-task-md.md:30
+quick-start-guide.md:26
 - Testing frameworks mentioned: 15
