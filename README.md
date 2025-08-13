@@ -23,7 +23,7 @@ Here's the step-by-step process using the `.md` files in this repository:
 Whether you have a PRD, Azure DevOps story, JIRA ticket, or other requirements, convert them into testable requirements:
 
 ```text
-Use @create-trd.md
+Use @create-trd-md.md
 Here's the requirement document I want to analyze for testing: [Paste your PRD/Story/Ticket]
 Tech stack: [Your stack - e.g., React, Node.js, PostgreSQL]
 Current testing tools: [Your current setup - e.g., Jest, Cypress, Playwright]
@@ -34,7 +34,7 @@ Current testing tools: [Your current setup - e.g., Jest, Cypress, Playwright]
 Transform your TRD into a detailed test strategy covering all testing types:
 
 ```text
-Use @generate-test-strategy.md with @[your-trd-file].md
+Use @generate-test-strategy-md.md with @[your-trd-file].md
 Focus areas: [unit, integration, api, performance, e2e, accessibility, security]
 ```
 
@@ -43,7 +43,7 @@ Focus areas: [unit, integration, api, performance, e2e, accessibility, security]
 Break down your test strategy into actionable tasks:
 
 ```text
-Use @generate-test-tasks.md with @[your-test-strategy-file].md
+Use @generate-test-tasks-md.md with @[your-test-strategy-file].md
 ```
 
 ### 4️⃣ Implement Tests Systematically
@@ -51,7 +51,7 @@ Use @generate-test-tasks.md with @[your-test-strategy-file].md
 Execute your test plan step by step:
 
 ```text
-Use @implement-test-task.md
+Use @implement-test-task-md.md
 Current task: [Reference specific task from your test plan]
 ```
 
@@ -60,7 +60,7 @@ Current task: [Reference specific task from your test plan]
 Track and report on your testing progress:
 
 ```text
-Use @generate-test-report.md
+Use @generate-test-report-md.md
 Test results directory: [path to your test results]
 Coverage requirements: [your coverage thresholds]
 ```
@@ -69,20 +69,26 @@ Coverage requirements: [your coverage thresholds]
 
 ```
 /ai-qa-tasks/
-├── README.md                    # This file
-├── create-trd.md               # Convert requirements to Test Requirements Document
-├── generate-test-strategy.md   # Create comprehensive test strategy
-├── generate-test-tasks.md      # Break strategy into implementation tasks
-├── implement-test-task.md      # Execute individual test tasks
-├── generate-test-report.md     # Create coverage and metrics reports
-├── examples/                   # Example outputs
-│   ├── sample-trd.md
+├── README.md                         # This file
+├── create-trd-md.md                  # Convert requirements to Test Requirements Document
+├── generate-test-strategy-md.md      # Create comprehensive test strategy
+├── generate-test-tasks-md.md         # Break strategy into implementation tasks
+├── implement-test-task-md.md         # Execute individual test tasks
+├── generate-test-report-md.md        # Create coverage and metrics reports
+├── quick-start-guide.md
+├── contributing-guide.md
+├── examples/                         # Example outputs
+│   ├── sample-trd-example.md
 │   ├── sample-test-strategy.md
-│   └── sample-test-report.md
-└── templates/                  # Reusable templates
-    ├── test-case-template.md
-    ├── api-test-template.md
-    └── e2e-test-template.md
+│   └── microservices-testing.md
+├── templates/                        # Reusable templates
+│   ├── api-test-template.md
+│   ├── e2e-test-template.md
+│   ├── performance-test-template.md
+│   └── bug-report-template.md
+└── docs/
+    ├── best-practices.md
+    └── troubleshooting.md
 ```
 
 ## 🌟 Benefits
@@ -179,6 +185,30 @@ Got ideas to improve these QA workflows or have new testing approaches? Contribu
 - [Test Pyramid Concept](https://martinfowler.com/articles/practical-test-pyramid.html)
 - [Accessibility Testing Guide](https://www.w3.org/WAI/test-evaluate/)
 - [OWASP API Security Top 10](https://owasp.org/API-Security/)
+
+## ✅ Validation and CI
+
+Use the local script to mirror CI checks before pushing changes.
+
+- __Local validation (Windows/PowerShell)__
+
+```powershell
+./scripts/validate.ps1 -Strict -FailOnLinkIssues
+```
+
+- __CI workflow__: `/.github/workflows/validate.yml`
+  - Markdown linting (non-blocking; honors `.markdownlint.json`)
+  - Markdown link check (continues on error; uses `.github/markdown-link-check-config.json` when present)
+  - Spell check via `crate-ci/typos` (uses `.github/typos.toml` when present)
+  - Examples validation for code completeness in `examples/` and `templates/`
+  - Repository stats generation on `main` only (`STATS.md`)
+
+- __Config files__ (optional but supported):
+  - `.markdownlint.json`
+  - `.github/markdown-link-check-config.json`
+  - `.github/typos.toml`
+
+![Validate](https://github.com/MatthewEngman/ai-qa-tasks/actions/workflows/validate.yml/badge.svg)
 
 ---
 
