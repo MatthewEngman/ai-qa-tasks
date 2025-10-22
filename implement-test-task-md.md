@@ -625,15 +625,235 @@ export class LoginPage {
 }
 ```
 
+## Task Completion Protocol
+
+When completing a test implementation task, follow this rigorous quality gate process:
+
+### 1. Run Full Test Suite
+Before committing any test code, execute the complete test suite to ensure no regressions:
+
+```bash
+# JavaScript/TypeScript projects
+npm test                    # Run all tests
+npm run test:unit          # Run unit tests only
+npm run test:integration   # Run integration tests only
+npm run test:e2e           # Run E2E tests only
+
+# Python projects
+pytest                     # Run all tests
+pytest tests/unit/         # Run specific test directory
+python -m pytest -v        # Verbose output
+
+# Ruby projects
+bundle exec rspec          # Run all RSpec tests
+bundle exec rake test      # Run all tests
+
+# .NET projects
+dotnet test                # Run all tests
+
+# Java projects
+mvn test                   # Maven
+./gradlew test            # Gradle
+```
+
+### 2. Verify Coverage Thresholds
+Check that code coverage meets or exceeds project targets:
+
+```bash
+# JavaScript/TypeScript
+npm run test:coverage
+npm run coverage:report
+
+# Python
+pytest --cov=src --cov-report=html
+pytest --cov=src --cov-report=term-missing
+
+# Ruby
+bundle exec rspec --coverage
+
+# Check coverage thresholds
+# Ensure line coverage >= target (typically 80-90%)
+# Ensure branch coverage >= target (typically 75-85%)
+```
+
+### 3. Run Quality Checks
+Execute linters and type checkers to maintain code quality:
+
+```bash
+# JavaScript/TypeScript
+npm run lint               # ESLint
+npm run type-check         # TypeScript
+npm run format:check       # Prettier
+
+# Python
+pylint tests/              # Linting
+mypy tests/                # Type checking
+black --check tests/       # Formatting
+ruff check tests/          # Fast linting
+
+# Ruby
+bundle exec rubocop        # Style checking
+
+# Fix issues automatically where possible
+npm run lint:fix
+black tests/
+```
+
+### 4. Clean Up Test Code
+Before staging changes, remove all temporary artifacts:
+
+- **Debug Code**: Remove console.log, print(), debugger statements
+- **Commented Code**: Delete commented-out test cases or old implementations
+- **Temporary Files**: Remove .only(), .skip(), or focused test markers
+- **Test Data**: Clean up temporary test files or fixtures
+- **TODO Comments**: Either implement or create tickets for TODOs
+
+```bash
+# Search for common debug artifacts
+rg "console\.log" tests/
+rg "debugger" tests/
+rg "\.only\(" tests/
+rg "\.skip\(" tests/
+rg "print\(" tests/
+```
+
+### 5. Stage Changes Selectively
+Only stage test-related files, avoiding unrelated changes:
+
+```bash
+# Stage specific test files
+git add tests/unit/auth.test.js
+git add tests/integration/api.test.js
+git add tests/fixtures/test-data.json
+
+# Stage test utilities
+git add tests/helpers/test-utils.js
+git add tests/setup/test-config.js
+
+# Verify staged changes
+git diff --staged
+```
+
+### 6. Commit with Structured Message
+Use conventional commit format with comprehensive test context:
+
+```bash
+# Format: test(scope): brief description
+#
+# - Detailed change 1
+# - Detailed change 2
+# - Coverage/metrics info
+# - Task reference
+
+git commit -m "test(auth): add comprehensive authentication unit tests" \
+  -m "- Tests login validation with valid/invalid credentials" \
+  -m "- Tests session management and token refresh" \
+  -m "- Tests password reset flow and email verification" \
+  -m "- Tests rate limiting and brute force protection" \
+  -m "- Achieves 95% coverage for auth module" \
+  -m "- Implements UNIT-C-001 from test strategy"
+
+# Other conventional commit types for test code:
+# test(api): ...        - API test implementation
+# test(e2e): ...        - End-to-end test implementation
+# test(perf): ...       - Performance test implementation
+# test(security): ...   - Security test implementation
+# test(a11y): ...       - Accessibility test implementation
+# refactor(test): ...   - Test code refactoring
+# fix(test): ...        - Test bug fixes
+# chore(test): ...      - Test infrastructure updates
+```
+
+### 7. Verify Commit Quality
+Before pushing, review your commit:
+
+```bash
+# View commit details
+git show HEAD
+
+# Verify commit message format
+git log -1 --pretty=format:"%s%n%b"
+
+# Check committed files
+git show --name-only HEAD
+
+# Run tests one more time on committed code
+npm test
+```
+
+### 8. Pre-Push Validation
+Final checks before pushing to remote:
+
+```bash
+# Ensure you're on the correct branch
+git branch --show-current
+
+# Pull latest changes and rebase if needed
+git pull --rebase origin main
+
+# Run full test suite after rebase
+npm test
+
+# Push changes
+git push origin feature/test-implementation
+```
+
+## Commit Message Examples
+
+### Example 1: Unit Tests
+```bash
+git commit -m "test(checkout): add unit tests for cart calculation logic" \
+  -m "- Tests price calculation with discounts and taxes" \
+  -m "- Tests quantity validation and limits" \
+  -m "- Tests coupon code application" \
+  -m "- Achieves 92% line coverage, 88% branch coverage" \
+  -m "- Implements UNIT-H-003 from test strategy"
+```
+
+### Example 2: Integration Tests
+```bash
+git commit -m "test(payment): add integration tests for payment gateway" \
+  -m "- Tests successful payment processing flow" \
+  -m "- Tests payment failure and retry logic" \
+  -m "- Tests webhook handling and order updates" \
+  -m "- Tests refund processing" \
+  -m "- Uses Testcontainers for database isolation" \
+  -m "- Implements INT-C-006 from test strategy"
+```
+
+### Example 3: E2E Tests
+```bash
+git commit -m "test(e2e): add end-to-end tests for user registration" \
+  -m "- Tests complete registration flow with email verification" \
+  -m "- Tests form validation and error messages" \
+  -m "- Tests duplicate email prevention" \
+  -m "- Tests welcome email delivery" \
+  -m "- Uses Playwright with Page Object Model" \
+  -m "- Implements E2E-C-002 from test strategy"
+```
+
+### Example 4: Performance Tests
+```bash
+git commit -m "test(perf): add load tests for API endpoints" \
+  -m "- Tests 1000 concurrent users on product search" \
+  -m "- Tests response time under sustained load" \
+  -m "- Tests database connection pool behavior" \
+  -m "- Validates P95 latency < 400ms requirement" \
+  -m "- Uses k6 with custom metrics" \
+  -m "- Implements PERF-H-001 from test strategy"
+```
+
 ## Usage Instructions
 
 When implementing a test task:
 
 1. **Analyze the Task**: Understand requirements, scope, and acceptance criteria
-2. **Plan the Implementation**: Choose appropriate patterns and tools
-3. **Set Up Infrastructure**: Configure frameworks, tools, and CI/CD integration
-4. **Implement Tests**: Write comprehensive, maintainable test code
-5. **Validate Implementation**: Verify tests work correctly and meet requirements
-6. **Document and Handoff**: Create documentation and knowledge transfer
+2. **Assess Existing Tests**: Review current test patterns and infrastructure
+3. **Plan the Implementation**: Choose appropriate patterns and tools
+4. **Set Up Infrastructure**: Configure frameworks, tools, and CI/CD integration
+5. **Implement Tests**: Write comprehensive, maintainable test code
+6. **Follow Completion Protocol**: Execute all quality gates before committing
+7. **Validate Implementation**: Verify tests work correctly and meet requirements
+8. **Document and Handoff**: Create documentation and knowledge transfer
 
 This systematic approach ensures high-quality, maintainable test implementations that provide reliable quality assurance for your application.

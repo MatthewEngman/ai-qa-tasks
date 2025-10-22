@@ -165,6 +165,30 @@ Present the TRD as a well-structured markdown document with:
 - Code blocks for technical specifications
 - Emphasis on actionable, testable requirements
 
+### File Naming Convention
+
+Save the generated TRD with a structured filename for easy tracking and reference:
+
+**Format:** `[n]-trd-[feature-name].md`
+
+Where:
+- `[n]` is a 4-digit zero-padded sequence number (0001, 0002, 0003, etc.)
+- `[feature-name]` is a descriptive, hyphenated slug in lowercase
+
+**Examples:**
+- `0001-trd-checkout-flow.md`
+- `0002-trd-user-authentication.md`
+- `0003-trd-payment-processing.md`
+- `0004-trd-admin-dashboard.md`
+
+**Location:** Save in a dedicated directory such as `/test-artifacts/` or `/qa-docs/` for organization.
+
+This naming convention provides:
+- **Sequential tracking** of test requirements over time
+- **Easy sorting** in file systems and version control
+- **Clear identification** of what each TRD covers
+- **Consistent references** in downstream test strategies and tasks
+
 ## Validation Checklist
 
 Before finalizing the TRD, ensure:

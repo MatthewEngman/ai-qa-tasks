@@ -268,6 +268,29 @@ Present the strategy as a comprehensive document with:
 6. **Success Metrics**: Measurable outcomes and KPIs
 7. **Risk Analysis**: Identified risks and mitigation strategies
 
+### File Naming Convention
+
+Save the generated test strategy with a structured filename that corresponds to its source TRD:
+
+**Format:** `[n]-strategy-[feature-name].md`
+
+Where:
+- `[n]` matches the sequence number from the source TRD
+- `[feature-name]` matches the feature name from the source TRD
+
+**Examples:**
+- Source TRD: `0001-trd-checkout-flow.md` → Strategy: `0001-strategy-checkout-flow.md`
+- Source TRD: `0002-trd-user-authentication.md` → Strategy: `0002-strategy-user-authentication.md`
+- Source TRD: `0003-trd-payment-processing.md` → Strategy: `0003-strategy-payment-processing.md`
+
+**Location:** Save in the same directory as the TRD (e.g., `/test-artifacts/` or `/qa-docs/`) for easy correlation.
+
+This naming convention provides:
+- **Clear traceability** from TRD to test strategy
+- **Consistent organization** across testing artifacts
+- **Easy identification** of related documents
+- **Version alignment** between requirements and strategy
+
 ## Validation Checklist
 
 Ensure the strategy addresses:

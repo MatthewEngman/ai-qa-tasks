@@ -13,6 +13,38 @@ First, analyze the test strategy to understand:
 5. **Timeline Constraints**: Release dates, milestone requirements, phased rollouts
 6. **Success Criteria**: Definition of done for each testing area
 
+## Codebase Context Assessment
+
+Before generating tasks, assess the existing test infrastructure to leverage existing patterns and maintain consistency:
+
+### Existing Test Infrastructure Analysis
+1. **Current Test Frameworks**: Identify testing frameworks already in use (Jest, Vitest, Pytest, RSpec, etc.)
+2. **Test Organization**: Understand existing test directory structure and file naming conventions
+3. **Test Utilities**: Discover existing test helpers, utilities, and shared functions
+4. **Test Data Factories**: Identify existing test data generation patterns and factories
+5. **Mock Strategies**: Review existing mocking approaches and mock libraries
+6. **Fixtures and Setup**: Find existing test fixtures, setup files, and configuration
+7. **CI/CD Integration**: Understand current test execution in pipelines
+8. **Coverage Configuration**: Review existing coverage tools and thresholds
+
+### Reusable Components Identification
+1. **Page Objects**: Existing page object models or component abstractions
+2. **API Clients**: Test API clients or request builders
+3. **Authentication Helpers**: Login/auth utilities for test scenarios
+4. **Database Seeders**: Existing database setup and teardown utilities
+5. **Custom Matchers**: Project-specific assertion helpers
+6. **Test Reporters**: Custom reporting or logging utilities
+
+### Architectural Patterns Discovery
+1. **Testing Conventions**: Naming patterns (*.test.js, *.spec.ts, *_test.py, etc.)
+2. **Setup/Teardown Patterns**: beforeEach, afterEach, fixtures usage
+3. **Assertion Styles**: expect(), assert(), should() patterns in use
+4. **Async Handling**: Promise, async/await, or callback patterns
+5. **Error Testing**: How errors and exceptions are currently tested
+6. **Snapshot Testing**: If and how snapshot testing is used
+
+This assessment ensures that generated tasks align with existing practices and can leverage established infrastructure rather than creating redundant or conflicting test code.
+
 ## Task Breakdown Framework
 
 Create a comprehensive task list organized by testing categories, with each task following this structure:
@@ -491,6 +523,29 @@ Each task is considered complete when:
 - **Incremental Delivery**: Deliver value in small, working increments
 - **Continuous Feedback**: Regular check-ins with stakeholders
 - **Fallback Plans**: Alternative approaches for high-risk tasks
+
+## File Naming Convention
+
+Save the generated task list with a structured filename that corresponds to its source test strategy:
+
+**Format:** `[n]-tasks-[feature-name].md`
+
+Where:
+- `[n]` matches the sequence number from the source test strategy
+- `[feature-name]` matches the feature name from the source test strategy
+
+**Examples:**
+- Source Strategy: `0001-strategy-checkout-flow.md` → Tasks: `0001-tasks-checkout-flow.md`
+- Source Strategy: `0002-strategy-user-authentication.md` → Tasks: `0002-tasks-user-authentication.md`
+- Source Strategy: `0003-strategy-payment-processing.md` → Tasks: `0003-tasks-payment-processing.md`
+
+**Location:** Save in the same directory as the TRD and strategy (e.g., `/test-artifacts/` or `/qa-docs/`) for complete traceability.
+
+This naming convention provides:
+- **End-to-end traceability** from TRD → Strategy → Tasks
+- **Consistent artifact organization** throughout the QA workflow
+- **Easy identification** of related documents
+- **Version alignment** across all testing artifacts
 
 ## Usage Instructions
 

@@ -111,18 +111,63 @@ Coverage requirements: [your coverage thresholds]
 
 ### For Claude Code Users
 
-1. **Copy files to your repo:** Copy the `.md` files to a subdirectory in your project (e.g., `/ai-qa-tasks`)
-2. **Reference in project docs:** Add these lines to your project's documentation:
+#### Basic Setup
 
-```markdown
-# AI QA Tasks
-Use these files when I request structured QA assistance:
-- @ai-qa-tasks/create-trd.md
-- @ai-qa-tasks/generate-test-strategy.md
-- @ai-qa-tasks/generate-test-tasks.md
-- @ai-qa-tasks/implement-test-task.md
-- @ai-qa-tasks/generate-test-report.md
-```
+1. **Copy files to your repo:** Copy the `.md` files to a subdirectory in your project (e.g., `/ai-qa-tasks`)
+
+2. **Reference in CLAUDE.md:** Add these lines to your project's `./CLAUDE.md` file:
+   ```markdown
+   # AI QA Tasks
+   Use these files when I request structured QA assistance:
+   /ai-qa-tasks/create-trd-md.md
+   /ai-qa-tasks/generate-test-strategy-md.md
+   /ai-qa-tasks/generate-test-tasks-md.md
+   /ai-qa-tasks/implement-test-task-md.md
+   /ai-qa-tasks/generate-test-report-md.md
+   ```
+
+#### Advanced Setup with Custom Commands
+
+For easier access, create custom slash commands in `.claude/commands/`:
+
+1. **Create `.claude/commands/create-trd.md`:**
+   ```markdown
+   Please use the structured workflow in /ai-qa-tasks/create-trd-md.md to help me create a Test Requirements Document from the provided requirements.
+   ```
+
+2. **Create `.claude/commands/generate-test-strategy.md`:**
+   ```markdown
+   Please generate a comprehensive test strategy using /ai-qa-tasks/generate-test-strategy-md.md
+   
+   If not explicitly told which TRD to use, generate a list of TRDs and ask the user to select one under `/test-artifacts` or create a new one using `create-trd.md`:
+   - assume it's stored under `/test-artifacts` and has a filename starting with `[n]-trd-` (e.g., `0001-trd-checkout-flow.md`)
+   - it should not already have a corresponding test strategy in `/test-artifacts` (e.g., `0001-strategy-checkout-flow.md`)
+   - **always** ask the user to confirm the TRD file name before proceeding
+   
+   Make sure to provide options in number lists so I can respond easily (if multiple options).
+   ```
+
+3. **Create `.claude/commands/implement-tests.md`:**
+   ```markdown
+   Please implement tests using /ai-qa-tasks/implement-test-task-md.md
+   
+   Follow the task completion protocol:
+   1. Run full test suite before committing
+   2. Verify coverage thresholds
+   3. Run linters and type checkers
+   4. Use conventional commit format
+   ```
+
+4. **Restart Claude Code:** After adding these files, restart Claude Code with `/exit`
+
+5. **Use Commands:** You can now use commands like `/create-trd`, `/generate-test-strategy`, and `/implement-tests` to quickly start workflows
+
+#### Global vs Project Setup
+
+- **Project-level:** Place files in your project's `.claude/` directory (recommended for project-specific workflows)
+- **Global-level:** Place files in your global Claude Code configuration directory to use across all projects
+
+For more details, see the [Claude Code documentation on memory](https://docs.anthropic.com/en/docs/claude-code/memory) and [custom slash commands](https://docs.anthropic.com/en/docs/claude-code/common-workflows#create-personal-slash-commands).
 
 ## 💡 Tips for QA Success
 
@@ -132,6 +177,7 @@ Use these files when I request structured QA assistance:
 - **Iterate on Test Design:** Review and refine test approaches before implementing
 - **Consider All Test Types:** Don't skip any testing layer - each serves a purpose
 - **Plan for Maintenance:** Structure tests for long-term maintainability
+- **Use Capable AI Models:** For best results with complex QA workflows, use advanced AI models (Cursor Pro, Claude Code with Claude 3.5 Sonnet, etc.). Free or basic models may struggle with the structured instructions and comprehensive test generation required for quality assurance work.
 
 ## 🎯 Testing Types Covered
 
