@@ -151,10 +151,13 @@ Before submitting new workflow files:
 
 ### Before Submitting
 - [ ] Test your changes thoroughly
+- [ ] Run full test suite if applicable (`npm test`, `pytest`, etc.)
+- [ ] Run linters and type checkers (`npm run lint`, `npm run type-check`)
 - [ ] Update documentation if needed
 - [ ] Add examples demonstrating your contribution
 - [ ] Ensure your changes follow the style guidelines
 - [ ] Update the README if you're adding new files
+- [ ] Follow commit message conventions (see below)
 
 ### PR Description Template
 ```markdown
@@ -249,6 +252,77 @@ Before submitting any contribution:
 - [ ] **Write clear commit messages** describing your changes
 - [ ] **Reference any related issues** in your PR description
 - [ ] **Be responsive to feedback** during the review process
+
+## 📝 Commit Message Standards
+
+We follow conventional commit format for consistency and automated changelog generation.
+
+### Format
+```bash
+<type>(<scope>): <brief description>
+
+- Detailed change 1
+- Detailed change 2
+- Additional context
+```
+
+### Types
+- `feat`: New feature or workflow addition
+- `fix`: Bug fix or correction
+- `docs`: Documentation changes
+- `test`: Adding or updating test examples
+- `refactor`: Code restructuring without behavior change
+- `chore`: Maintenance tasks, dependencies, configuration
+- `style`: Formatting, whitespace, markdown fixes
+
+### Scopes (Examples)
+- `workflow`: Changes to workflow files
+- `examples`: Changes to example files
+- `templates`: Changes to template files
+- `docs`: Changes to documentation
+- `ci`: Changes to CI/CD configuration
+
+### Examples
+
+**Adding new workflow:**
+```bash
+git commit -m "feat(workflow): add visual regression testing workflow" \
+  -m "- Adds comprehensive visual testing guidance" \
+  -m "- Includes Chromatic and Percy examples" \
+  -m "- Provides snapshot comparison strategies"
+```
+
+**Improving documentation:**
+```bash
+git commit -m "docs(readme): expand Claude Code setup instructions" \
+  -m "- Adds detailed custom command configuration" \
+  -m "- Includes project vs global setup options" \
+  -m "- Provides troubleshooting tips"
+```
+
+**Adding examples:**
+```bash
+git commit -m "test(examples): add microservices testing example" \
+  -m "- Demonstrates contract testing with Pact" \
+  -m "- Shows service mesh testing patterns" \
+  -m "- Includes observability integration"
+```
+
+**Fixing issues:**
+```bash
+git commit -m "fix(templates): correct API test template syntax" \
+  -m "- Fixes async/await usage in examples" \
+  -m "- Updates import statements" \
+  -m "- Resolves #123"
+```
+
+### Quality Gates Before Commit
+
+1. **Clean up**: Remove debug code, temporary files, commented sections
+2. **Stage selectively**: Only stage files related to your change
+3. **Verify changes**: Review `git diff --staged` before committing
+4. **Test locally**: Ensure examples work and links are valid
+5. **Commit with context**: Use conventional format with detailed body
 
 ## 🌟 Types of Contributors We're Looking For
 
