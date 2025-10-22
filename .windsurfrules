@@ -1,0 +1,408 @@
+# AI QA Tasks - Windsurf Rules
+
+You are working in the **AI QA Tasks** repository, a documentation-first system that provides structured workflows for teams using AI coding assistants to perform quality assurance activities. This repository contains markdown-based prompts and templates that guide AI systems in generating comprehensive test artifacts.
+
+## Repository Purpose
+
+This is a meta-system for test generation - it doesn't execute tests but guides the creation of tests through AI interaction. The repository provides a 5-step workflow from requirements to comprehensive test coverage.
+
+## Core 5-Step QA Workflow
+
+When users request QA assistance, guide them through this systematic workflow:
+
+1. **Create TRD (Test Requirements Document)**: Use `@create-trd-md.md` to convert requirements into testable specifications
+2. **Generate Test Strategy**: Use `@generate-test-strategy-md.md` to create comprehensive test plans
+3. **Create Test Tasks**: Use `@generate-test-tasks-md.md` to break strategy into actionable tasks
+4. **Implement Tests**: Use `@implement-test-task-md.md` to execute individual test tasks
+5. **Generate Reports**: Use `@generate-test-report-md.md` to create coverage and metrics reports
+
+### Workflow File Usage Pattern
+
+When referencing workflow files:
+- Use `@filename.md` syntax in conversations
+- Always ask for tech stack context (frameworks, testing tools, infrastructure)
+- Request quality gates and coverage thresholds upfront
+- Ensure traceability between artifacts (requirements → tests → reports)
+
+## File Naming Conventions
+
+### Test Artifacts (TRDs, Strategies, Tasks, Reports)
+
+**Format**: `[n]-[type]-[feature-name].md`
+
+Where:
+- `[n]` = 4-digit zero-padded sequence number (0001, 0002, 0003, etc.)
+- `[type]` = artifact type (trd, strategy, tasks, report)
+- `[feature-name]` = descriptive, hyphenated slug in lowercase
+
+**Examples**:
+- `0001-trd-checkout-flow.md`
+- `0001-strategy-checkout-flow.md`
+- `0001-tasks-checkout-flow.md`
+- `0002-trd-user-authentication.md`
+
+**Location**: Save in `/test-artifacts/` or `/qa-docs/` directory
+
+### Workflow Files (Root Level)
+
+Follow existing pattern: `[action]-[artifact]-md.md`
+- Examples: `create-trd-md.md`, `generate-test-strategy-md.md`
+
+### Templates
+
+Format: `[type]-test-template.md`
+- Examples: `api-test-template.md`, `e2e-test-template.md`, `performance-test-template.md`
+
+### Examples
+
+Format: `[descriptive-name].md` or `sample-[type]-example.md`
+- Examples: `sample-trd-example.md`, `microservices-testing.md`
+
+## Workflow File Structure Requirements
+
+When creating or modifying workflow files, ensure they include these required sections:
+
+1. **Role Definition**: Start with "You are a [Role] who specializes in [Expertise]..."
+2. **Analysis Framework**: How to analyze the input
+3. **Implementation Structure**: Step-by-step approach
+4. **Code Examples**: Concrete demonstrations with proper syntax
+5. **Usage Instructions**: How to invoke and use the workflow
+
+### Code Example Standards
+
+All code examples must:
+- Include proper imports/requires at the top
+- Use appropriate language tags in code blocks (```javascript, ```typescript, etc.)
+- Include test structure (describe/it/test blocks for test code)
+- Be complete and executable (not fragments)
+- Follow the Arrange-Act-Assert pattern for tests
+- Include clear comments explaining key steps
+
+## Testing Framework Context
+
+### Supported Frameworks by Type
+
+**Frontend Testing**:
+- Unit: Jest, Vitest, React Testing Library, Vue Test Utils
+- E2E: Playwright, Cypress, WebdriverIO
+
+**Backend Testing**:
+- Unit/Integration: Jest, Mocha, Chai, Supertest
+- API: Postman/Newman, REST Assured, Pact (contract testing)
+
+**Performance Testing**:
+- k6, Artillery, JMeter, Gatling, Lighthouse
+
+**Mobile Testing**:
+- React Native: Detox, Jest
+- Flutter: flutter_test, integration_test
+- Native: XCTest (iOS), Espresso (Android), Appium
+
+**Visual Regression**:
+- Percy, Chromatic, BackstopJS
+
+### Framework Selection Guidance
+
+When generating test code:
+- Ask about existing testing infrastructure
+- Match the tech stack (React → React Testing Library, Vue → Vue Test Utils)
+- Consider CI/CD integration requirements
+- Respect existing patterns in the codebase
+
+## Testing Types Coverage
+
+Ensure comprehensive coverage across all relevant testing types:
+
+1. **Unit Tests**: Component and function-level testing
+2. **Integration Tests**: Module and service integration validation
+3. **API Tests**: REST/GraphQL endpoint testing with contract validation
+4. **E2E Tests**: Full user journey testing (critical paths)
+5. **Performance Tests**: Load, stress, spike, soak testing with SLAs
+6. **Security Tests**: Vulnerability scanning, penetration testing, OWASP compliance
+7. **Accessibility Tests**: WCAG AA/AAA compliance, screen reader support
+8. **Visual Regression Tests**: UI consistency validation
+
+## Quality Gates and Metrics
+
+### Coverage Requirements
+
+Default thresholds (adjust based on project needs):
+- Code Coverage: >80% (line, branch, function)
+- Requirements Coverage: 100% of critical requirements
+- Test Flakiness: <1% failure rate
+- Performance: P95 latency <400ms for critical paths
+
+### Traceability Requirements
+
+Maintain clear links between:
+- Requirements (FR-001, FR-002) → Test Cases (UNIT-C-001, API-E-002)
+- Test Cases → Test Results
+- Defects → Root Cause → Fix Verification
+- Quality Gates → Validation Methods
+
+## Commit Message Standards
+
+Use conventional commit format:
+
+### Format
+```
+<type>(<scope>): <brief description>
+
+- Detailed change 1
+- Detailed change 2
+- Additional context
+```
+
+### Types
+- `feat`: New feature or workflow addition
+- `fix`: Bug fix or correction
+- `docs`: Documentation changes
+- `test`: Adding or updating test examples
+- `refactor`: Code restructuring without behavior change
+- `chore`: Maintenance tasks, dependencies, configuration
+- `style`: Formatting, whitespace, markdown fixes
+
+### Scopes
+- `workflow`: Changes to workflow files
+- `examples`: Changes to example files
+- `templates`: Changes to template files
+- `docs`: Changes to documentation
+- `ci`: Changes to CI/CD configuration
+
+### Examples
+
+```bash
+feat(workflow): add visual regression testing workflow
+
+- Adds comprehensive visual testing guidance
+- Includes Chromatic and Percy examples
+- Provides snapshot comparison strategies
+```
+
+```bash
+docs(readme): expand Windsurf setup instructions
+
+- Adds detailed configuration steps
+- Includes global vs local setup options
+- Provides troubleshooting tips
+```
+
+## Validation Before Commits
+
+Before committing changes, ensure:
+
+1. **Markdown Quality**:
+   - Run markdownlint checks (honors `.markdownlint.json`)
+   - Verify all links are valid
+   - Check for typos (uses `.github/typos.toml`)
+
+2. **Code Completeness**:
+   - All code examples include imports/requires
+   - Test examples have describe/it/test blocks
+   - No placeholder values like `[resource]` remain
+
+3. **Structure Validation**:
+   - Workflow files have all required sections
+   - File naming follows conventions
+   - Proper directory placement
+
+4. **Local Validation** (Windows/PowerShell):
+   ```powershell
+   ./scripts/validate.ps1 -Strict -FailOnLinkIssues
+   ```
+
+## Template Usage Guidelines
+
+### When to Use Templates
+
+- **API Test Template** (`templates/api-test-template.md`): REST/GraphQL endpoint testing with Supertest/Jest
+- **E2E Test Template** (`templates/e2e-test-template.md`): Full user journey testing with Playwright
+- **Performance Test Template** (`templates/performance-test-template.md`): Load testing with k6
+- **Bug Report Template** (`templates/bug-report-template.md`): Issue reporting
+
+### Template Customization
+
+When using templates:
+1. Replace ALL placeholders: `[resource]`, `[field]`, `[value]`, etc.
+2. Update authentication methods to match the API
+3. Add business-specific validation rules
+4. Configure environment variables (BASE_URL, API_KEY)
+5. Set appropriate performance thresholds
+6. Include security tests specific to requirements
+
+## Documentation Standards
+
+### Markdown Formatting
+
+- Use clear, descriptive headers (sentence case)
+- Include code blocks with language tags
+- Use tables for structured data (traceability matrices)
+- Keep line lengths reasonable (<120 characters preferred)
+- Add blank lines between sections for readability
+- Use bullet points for lists, numbered lists for sequences
+
+### Content Quality
+
+- Be specific and actionable (avoid vague guidance)
+- Provide concrete examples for abstract concepts
+- Include both positive and negative test cases
+- Document edge cases and boundary conditions
+- Explain the "why" behind testing approaches
+
+## Best Practices
+
+### Testing Principles
+
+1. **Shift-Left Testing**: Test early and often in development
+2. **Test Pyramid**: More unit tests, fewer E2E tests
+3. **Deterministic Tests**: No flaky tests (avoid sleep, use event-driven waits)
+4. **Test Independence**: Tests should not depend on execution order
+5. **Clear Test Names**: Describe what is being tested and expected outcome
+6. **Maintainability**: Structure tests for long-term maintenance
+
+### Common Pitfalls to Avoid
+
+- **Flaky Tests**: Use proper waits (waitFor, waitUntil) not sleep/timeouts
+- **Hardcoded Values**: Use environment variables and test data factories
+- **Missing Cleanup**: Always clean up test data in afterEach/afterAll
+- **Poor Selectors**: Use data-test attributes, not brittle CSS selectors
+- **Incomplete Coverage**: Don't skip error cases and edge conditions
+- **No Traceability**: Always link tests back to requirements
+
+## Tech Stack Adaptation
+
+When generating tests, always:
+1. Ask about the tech stack if not provided
+2. Verify testing frameworks already in use
+3. Match existing patterns and conventions
+4. Consider CI/CD pipeline integration
+5. Respect existing quality gates and thresholds
+
+### Framework-Specific Guidance
+
+Reference `docs/framework-guides.md` for detailed guidance on:
+- React (Jest, React Testing Library, Playwright)
+- Vue (Vitest, Vue Test Utils, Cypress)
+- Angular (Jasmine, Karma, Protractor/Playwright)
+- Node.js (Jest, Mocha, Supertest, Testcontainers)
+- Python (pytest, FastAPI TestClient, Playwright)
+- Mobile (React Native, Flutter, native iOS/Android)
+
+## Contributing Guidelines
+
+When helping users contribute to this repository:
+
+1. **Read Existing Content**: Understand patterns and style before adding
+2. **Test with AI Assistant**: Verify workflows work before submitting
+3. **Follow Conventions**: Use established file structure and naming
+4. **Include Examples**: Provide comprehensive usage examples
+5. **Write Clear Commits**: Use conventional commit format
+6. **Validate Locally**: Run validation scripts before pushing
+7. **Be Responsive**: Address feedback during review process
+
+## Quality Assurance Workflow Tips
+
+### For New Users
+
+1. Start with `README.md` for system overview
+2. Follow `quick-start-guide.md` for hands-on tutorial
+3. Reference examples for output structure expectations
+4. Use templates as starting points for test creation
+
+### For Contributors
+
+1. Read `contributing-guide.md` for standards
+2. Use `templates/bug-report-template.md` for issues
+3. Run `scripts/validate.ps1` locally before PRs
+4. Test workflow files with AI assistant before submitting
+
+### For AI Interaction
+
+1. Reference workflow files with `@filename.md` syntax
+2. Provide complete context (tech stack, tools, requirements)
+3. Follow the 5-step workflow sequentially
+4. Maintain traceability throughout the process
+5. Generate measurable quality gates and metrics
+
+## Advanced Features
+
+### Microservices Testing
+
+For distributed systems, reference `examples/microservices-testing.md`:
+- Contract testing with Pact
+- Integration testing with Testcontainers
+- Messaging testing (Kafka, RabbitMQ)
+- Resilience testing (circuit breakers, retries)
+- Observability integration (trace IDs, metrics)
+
+### CI/CD Integration
+
+Ensure tests integrate with:
+- GitHub Actions, GitLab CI, Jenkins, CircleCI
+- Quality gates that block merges
+- Automated test execution on PR
+- Coverage reporting and tracking
+- Performance benchmarking over time
+
+### Security and Compliance
+
+For regulated industries:
+- PCI DSS compliance for payment data
+- HIPAA compliance for healthcare data
+- GDPR compliance for EU user data
+- WCAG AA/AAA for accessibility
+- OWASP Top 10 security testing
+
+## Repository Structure Reference
+
+```
+/ai-qa-tasks/
+├── README.md                         # System overview
+├── quick-start-guide.md              # 10-minute tutorial
+├── contributing-guide.md             # Contribution standards
+├── create-trd-md.md                  # Step 1: Requirements → TRD
+├── generate-test-strategy-md.md      # Step 2: TRD → Strategy
+├── generate-test-tasks-md.md         # Step 3: Strategy → Tasks
+├── implement-test-task-md.md         # Step 4: Tasks → Tests
+├── generate-test-report-md.md        # Step 5: Tests → Report
+├── examples/                         # Sample outputs
+│   ├── sample-trd-example.md
+│   ├── sample-test-strategy.md
+│   └── microservices-testing.md
+├── templates/                        # Reusable patterns
+│   ├── api-test-template.md
+│   ├── e2e-test-template.md
+│   ├── performance-test-template.md
+│   └── bug-report-template.md
+├── docs/                             # Supporting documentation
+│   ├── best-practices.md
+│   ├── troubleshooting.md
+│   └── framework-guides.md
+└── .github/                          # CI/CD configuration
+    ├── workflows/validate.yml
+    ├── markdown-link-check-config.json
+    ├── typos.toml
+    └── .markdownlint.json
+```
+
+## Key Reminders
+
+1. **This is a documentation repository** - focus on creating clear, actionable markdown content
+2. **Framework agnostic** - adapt to any tech stack the user provides
+3. **Traceability is critical** - always link artifacts together
+4. **Quality over speed** - comprehensive coverage beats quick implementation
+5. **Validation is mandatory** - run checks before committing
+6. **Examples must be complete** - no partial code or placeholders in examples
+7. **Follow conventions** - consistency makes the repository maintainable
+
+## Getting Help
+
+- Review `docs/troubleshooting.md` for common issues
+- Check `docs/best-practices.md` for testing guidance
+- Reference `docs/framework-guides.md` for tech-stack specifics
+- Consult `examples/` directory for real-world patterns
+- Read `contributing-guide.md` for contribution standards
+
+---
+
+**Remember**: This repository helps teams systematically approach QA with AI assistance. Every workflow file, template, and example should make comprehensive testing more accessible and maintainable.

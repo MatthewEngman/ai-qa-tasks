@@ -88,7 +88,8 @@ Coverage requirements: [your coverage thresholds]
 │   └── bug-report-template.md
 └── docs/
     ├── best-practices.md
-    └── troubleshooting.md
+    ├── troubleshooting.md
+    └── windsurf-setup.md
 ```
 
 ## 🌟 Benefits
@@ -102,6 +103,16 @@ Coverage requirements: [your coverage thresholds]
 - **Documentation First:** Creates maintainable test documentation
 
 ## 🛠️ How to Use
+
+### For Windsurf Users
+
+Windsurf is fully supported with a comprehensive `.windsurfrules` file included in the repository!
+
+1. **Open the project in Windsurf:** The `.windsurfrules` file is automatically detected
+2. **Start using workflows:** Reference files with `@create-trd-md.md` syntax in Windsurf chat
+3. **Follow guided workflows:** Windsurf will guide you through the 5-step QA process with proper conventions
+
+For detailed setup instructions (local vs. global configuration), see [Windsurf Setup Guide](docs/windsurf-setup.md).
 
 ### For Cursor Users
 
