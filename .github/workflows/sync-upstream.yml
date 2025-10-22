@@ -1,0 +1,173 @@
+name: Sync Upstream Repository
+
+on:
+  schedule:
+    # Run every Monday at 9:00 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  check-upstream-changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    
+    steps:
+      - name: Checkout ai-qa-tasks repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Clone upstream ai-dev-tasks repository
+        run: |
+          cd /tmp
+          git clone https://github.com/snarktank/ai-dev-tasks.git upstream-repo
+          cd upstream-repo
+          echo "UPSTREAM_LATEST_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "UPSTREAM_LATEST_DATE=$(git log -1 --format=%cd --date=short)" >> $GITHUB_ENV
+      
+      - name: Get last checked commit
+        id: last-check
+        run: |
+          # Try to get the last checked commit from a tracking file
+          if [ -f .github/upstream-sync-state ]; then
+            LAST_COMMIT=$(cat .github/upstream-sync-state)
+            echo "last_commit=$LAST_COMMIT" >> $GITHUB_OUTPUT
+          else
+            # If no tracking file, use a commit from before the fork
+            echo "last_commit=b0d5c2f" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check for new commits
+        id: check-commits
+        run: |
+          cd /tmp/upstream-repo
+          LAST_COMMIT="${{ steps.last-check.outputs.last_commit }}"
+          
+          # Get commits since last check
+          NEW_COMMITS=$(git log --oneline ${LAST_COMMIT}..HEAD)
+          
+          if [ -z "$NEW_COMMITS" ]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No new commits found in upstream repository"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "commit_count=$(echo "$NEW_COMMITS" | wc -l)" >> $GITHUB_OUTPUT
+            
+            # Save commit details to file
+            echo "$NEW_COMMITS" > /tmp/new_commits.txt
+            
+            # Get detailed changes for each commit
+            git log ${LAST_COMMIT}..HEAD --pretty=format:"### %h - %s%n**Date:** %cd%n**Author:** %an%n%n%b%n---" --date=short > /tmp/commit_details.txt
+            
+            echo "Found new commits:"
+            cat /tmp/new_commits.txt
+          fi
+      
+      - name: Analyze changes and create issue
+        if: steps.check-commits.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd /tmp/upstream-repo
+          
+          # Get list of changed files
+          LAST_COMMIT="${{ steps.last-check.outputs.last_commit }}"
+          CHANGED_FILES=$(git diff --name-only ${LAST_COMMIT}..HEAD)
+          
+          # Categorize changes
+          WORKFLOW_CHANGES=$(echo "$CHANGED_FILES" | grep -E '\.(md|mdc)$' | grep -v README || true)
+          README_CHANGES=$(echo "$CHANGED_FILES" | grep README || true)
+          OTHER_CHANGES=$(echo "$CHANGED_FILES" | grep -v -E '\.(md|mdc)$' || true)
+          
+          # Create issue body header
+          echo "## 🔄 Upstream Repository Updates Detected" > /tmp/issue_body.md
+          echo "" >> /tmp/issue_body.md
+          echo "The [snarktank/ai-dev-tasks](https://github.com/snarktank/ai-dev-tasks) repository has new commits that may contain valuable updates for this repository." >> /tmp/issue_body.md
+          echo "" >> /tmp/issue_body.md
+          echo "### Summary" >> /tmp/issue_body.md
+          echo "- **New Commits:** ${{ steps.check-commits.outputs.commit_count }}" >> /tmp/issue_body.md
+          echo "- **Latest Commit:** \`${{ env.UPSTREAM_LATEST_COMMIT }}\`" >> /tmp/issue_body.md
+          echo "- **Latest Commit Date:** ${{ env.UPSTREAM_LATEST_DATE }}" >> /tmp/issue_body.md
+          echo "- **Last Checked Commit:** \`${{ steps.last-check.outputs.last_commit }}\`" >> /tmp/issue_body.md
+          echo "" >> /tmp/issue_body.md
+          echo "### Changed Files" >> /tmp/issue_body.md
+          
+          if [ -n "$WORKFLOW_CHANGES" ]; then
+            echo "" >> /tmp/issue_body.md
+            echo "#### Workflow Files (.md)" >> /tmp/issue_body.md
+            echo '```' >> /tmp/issue_body.md
+            echo "$WORKFLOW_CHANGES" >> /tmp/issue_body.md
+            echo '```' >> /tmp/issue_body.md
+          fi
+          
+          if [ -n "$README_CHANGES" ]; then
+            echo "" >> /tmp/issue_body.md
+            echo "#### Documentation" >> /tmp/issue_body.md
+            echo '```' >> /tmp/issue_body.md
+            echo "$README_CHANGES" >> /tmp/issue_body.md
+            echo '```' >> /tmp/issue_body.md
+          fi
+          
+          if [ -n "$OTHER_CHANGES" ]; then
+            echo "" >> /tmp/issue_body.md
+            echo "#### Other Files" >> /tmp/issue_body.md
+            echo '```' >> /tmp/issue_body.md
+            echo "$OTHER_CHANGES" >> /tmp/issue_body.md
+            echo '```' >> /tmp/issue_body.md
+          fi
+          
+          # Add commit details
+          echo "" >> /tmp/issue_body.md
+          echo "### Commit Details" >> /tmp/issue_body.md
+          echo "" >> /tmp/issue_body.md
+          cat /tmp/commit_details.txt >> /tmp/issue_body.md
+          
+          # Add analysis section
+          echo "" >> /tmp/issue_body.md
+          echo "### 📋 Recommended Actions" >> /tmp/issue_body.md
+          echo "" >> /tmp/issue_body.md
+          echo "1. **Review the changes** in the upstream repository" >> /tmp/issue_body.md
+          echo "2. **Evaluate applicability** to this QA-focused repository" >> /tmp/issue_body.md
+          echo "3. **Determine if updates are needed** to:" >> /tmp/issue_body.md
+          echo "   - Workflow files (create-trd-md.md, generate-test-strategy-md.md, etc.)" >> /tmp/issue_body.md
+          echo "   - Documentation (README.md, contributing-guide.md, best-practices.md)" >> /tmp/issue_body.md
+          echo "   - Examples and templates" >> /tmp/issue_body.md
+          echo "4. **Create a PR** with adapted changes if valuable updates are found" >> /tmp/issue_body.md
+          echo "" >> /tmp/issue_body.md
+          echo "### 🔗 Links" >> /tmp/issue_body.md
+          echo "" >> /tmp/issue_body.md
+          echo "- [Upstream Repository](https://github.com/snarktank/ai-dev-tasks)" >> /tmp/issue_body.md
+          echo "- [Compare Changes](https://github.com/snarktank/ai-dev-tasks/compare/${{ steps.last-check.outputs.last_commit }}...${{ env.UPSTREAM_LATEST_COMMIT }})" >> /tmp/issue_body.md
+          echo "- [Latest Commit](https://github.com/snarktank/ai-dev-tasks/commit/${{ env.UPSTREAM_LATEST_COMMIT }})" >> /tmp/issue_body.md
+          echo "" >> /tmp/issue_body.md
+          echo "### 🤖 Automation Note" >> /tmp/issue_body.md
+          echo "" >> /tmp/issue_body.md
+          echo "This issue was automatically created by the upstream sync workflow. The workflow runs weekly on Mondays at 9:00 AM UTC and can also be triggered manually." >> /tmp/issue_body.md
+          echo "" >> /tmp/issue_body.md
+          echo "To update the tracking state after reviewing these changes, update the \`.github/upstream-sync-state\` file with the latest commit hash: \`${{ env.UPSTREAM_LATEST_COMMIT }}\`" >> /tmp/issue_body.md
+          
+          # Create the issue
+          gh issue create \
+            --repo ${{ github.repository }} \
+            --title "🔄 Upstream Updates Available ($(date +%Y-%m-%d))" \
+            --body-file /tmp/issue_body.md \
+            --label "upstream-sync,documentation"
+          
+          echo "Issue created successfully"
+      
+      - name: Update tracking state
+        if: steps.check-commits.outputs.has_changes == 'true'
+        run: |
+          # Note: This step only updates locally. To persist, you'd need to commit back
+          # For now, we'll just log it. Manual update is recommended after review.
+          echo "Latest upstream commit: ${{ env.UPSTREAM_LATEST_COMMIT }}"
+          echo "Update .github/upstream-sync-state with this commit hash after reviewing changes"
+      
+      - name: No changes detected
+        if: steps.check-commits.outputs.has_changes == 'false'
+        run: |
+          echo "✅ No new changes in upstream repository since last check"
+          echo "Last checked commit: ${{ steps.last-check.outputs.last_commit }}"
+          echo "Current upstream HEAD: ${{ env.UPSTREAM_LATEST_COMMIT }}"
