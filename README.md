@@ -1,10 +1,10 @@
-# 🧪 AI QA Tasks for Quality Engineering 🤖
+# AI QA Tasks for Quality Engineering
 
-Welcome to **AI QA Tasks**! This repository provides a collection of markdown files designed to supercharge your quality assurance workflow with AI-powered IDEs and CLIs. Originally inspired by [snarktank/ai-dev-tasks](https://github.com/snarktank/ai-dev-tasks), these tools work with any AI coding assistant including Cursor, Claude Code, Windsurf, and others.
+Welcome to **AI QA Tasks**! This repository provides a collection of markdown files designed to supercharge your quality assurance workflow with AI-powered IDEs and CLIs. Originally inspired by [snarktank/ai-dev-tasks](https://github.com/snarktank/ai-dev-tasks), these tools work with any AI coding assistant including Cursor, Claude Code, Windsurf, Amp, and others.
 
 By leveraging these structured prompts, you can systematically approach quality engineering from requirements analysis to comprehensive test automation, with built-in checkpoints for verification. Stop wrestling with ad-hoc testing approaches and start guiding your AI collaborator through structured QA processes!
 
-## ✨ The Core QA Philosophy
+## The Core QA Philosophy
 
 Building comprehensive test coverage with AI can sometimes feel overwhelming. This workflow brings structure, clarity, and control to the QA process by:
 
@@ -14,11 +14,11 @@ Building comprehensive test coverage with AI can sometimes feel overwhelming. Th
 4. **Coverage & Metrics:** Ensuring measurable quality gates and reporting
 5. **Framework Integration:** Adapting tests to your specific tech stack and tooling
 
-## 🎯 Workflow: From Requirements to Comprehensive Testing
+## Workflow: From Requirements to Comprehensive Testing
 
 Here's the step-by-step process using the `.md` files in this repository:
 
-### 1️⃣ Create Test Requirements Document (TRD) from Requirements
+### 1. Create Test Requirements Document (TRD) from Requirements
 
 Whether you have a PRD, Azure DevOps story, JIRA ticket, or other requirements, convert them into testable requirements:
 
@@ -29,7 +29,7 @@ Tech stack: [Your stack - e.g., React, Node.js, PostgreSQL]
 Current testing tools: [Your current setup - e.g., Jest, Cypress, Playwright]
 ```
 
-### 2️⃣ Generate Comprehensive Test Strategy
+### 2. Generate Comprehensive Test Strategy
 
 Transform your TRD into a detailed test strategy covering all testing types:
 
@@ -38,7 +38,7 @@ Use @generate-test-strategy-md.md with @[your-trd-file].md
 Focus areas: [unit, integration, api, performance, e2e, accessibility, security]
 ```
 
-### 3️⃣ Create Test Implementation Plan
+### 3. Create Test Implementation Plan
 
 Break down your test strategy into actionable tasks:
 
@@ -46,7 +46,7 @@ Break down your test strategy into actionable tasks:
 Use @generate-test-tasks-md.md with @[your-test-strategy-file].md
 ```
 
-### 4️⃣ Implement Tests Systematically
+### 4. Implement Tests Systematically
 
 Execute your test plan step by step:
 
@@ -55,7 +55,7 @@ Use @implement-test-task-md.md
 Current task: [Reference specific task from your test plan]
 ```
 
-### 5️⃣ Generate Test Coverage & Metrics Reports
+### 5. Generate Test Coverage & Metrics Reports
 
 Track and report on your testing progress:
 
@@ -92,7 +92,7 @@ Coverage requirements: [your coverage thresholds]
     └── windsurf-setup.md
 ```
 
-## 🌟 Benefits
+## Benefits
 
 - **Comprehensive Coverage:** Ensures all testing types are considered and planned
 - **Requirements Traceability:** Links tests back to original requirements
@@ -102,7 +102,7 @@ Coverage requirements: [your coverage thresholds]
 - **AI-Guided Implementation:** Step-by-step guidance for test creation
 - **Documentation First:** Creates maintainable test documentation
 
-## 🛠️ How to Use
+## How to Use
 
 ### For Windsurf Users
 
@@ -180,7 +180,7 @@ For easier access, create custom slash commands in `.claude/commands/`:
 
 For more details, see the [Claude Code documentation on memory](https://docs.anthropic.com/en/docs/claude-code/memory) and [custom slash commands](https://docs.anthropic.com/en/docs/claude-code/common-workflows#create-personal-slash-commands).
 
-## 💡 Tips for QA Success
+## Tips for QA Success
 
 - **Be Specific About Requirements:** The more context you provide about your application and testing needs, the better the AI's output
 - **Include Your Tech Stack:** Always specify your testing frameworks, tools, and infrastructure
@@ -190,7 +190,7 @@ For more details, see the [Claude Code documentation on memory](https://docs.ant
 - **Plan for Maintenance:** Structure tests for long-term maintainability
 - **Use Capable AI Models:** For best results with complex QA workflows, use advanced AI models (Cursor Pro, Claude Code with Claude 3.5 Sonnet, etc.). Free or basic models may struggle with the structured instructions and comprehensive test generation required for quality assurance work.
 
-## 🎯 Testing Types Covered
+## Testing Types Covered
 
 - **Unit Tests:** Component and function-level testing
 - **Integration Tests:** Module and service integration testing
@@ -201,7 +201,7 @@ For more details, see the [Claude Code documentation on memory](https://docs.ant
 - **Security Tests:** Vulnerability and penetration testing
 - **Visual Regression Tests:** UI consistency testing
 
-## 🔧 Supported Tech Stacks & Tools
+## Supported Tech Stacks & Tools
 
 The templates and prompts are designed to work with popular testing frameworks:
 
@@ -217,7 +217,7 @@ The templates and prompts are designed to work with popular testing frameworks:
 
 **Visual:** Percy, Chromatic, BackstopJS
 
-## 📊 Quality Metrics & Reporting
+## Quality Metrics & Reporting
 
 Each workflow includes generation of:
 
@@ -228,7 +228,7 @@ Each workflow includes generation of:
 - Security scan reports
 - Traceability matrices (requirements to tests)
 
-## 🤝 Contributing
+## Contributing
 
 Got ideas to improve these QA workflows or have new testing approaches? Contributions welcome!
 
@@ -236,14 +236,14 @@ Got ideas to improve these QA workflows or have new testing approaches? Contribu
 - Submit a pull request with your enhancements
 - Share examples of successful QA implementations
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [Testing Best Practices](https://testing-library.com/docs/guiding-principles/)
 - [Test Pyramid Concept](https://martinfowler.com/articles/practical-test-pyramid.html)
 - [Accessibility Testing Guide](https://www.w3.org/WAI/test-evaluate/)
 - [OWASP API Security Top 10](https://owasp.org/API-Security/)
 
-## ✅ Validation and CI
+## Validation and CI
 
 Use the local script to mirror CI checks before pushing changes.
 
