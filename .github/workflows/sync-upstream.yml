@@ -72,16 +72,16 @@ jobs:
         run: |
           cd /tmp/upstream-repo
           
-          # Ensure required labels exist
-          gh label view "upstream-sync" --repo ${{ github.repository }} >/dev/null 2>&1 || \
-            gh label create "upstream-sync" --repo ${{ github.repository }} \
-              --description "Issues created by upstream sync workflow" \
-              --color "5319e7"
+          # Ensure required labels exist (idempotent - creates or updates)
+          gh label create "upstream-sync" --repo ${{ github.repository }} \
+            --description "Issues created by upstream sync workflow" \
+            --color "5319e7" \
+            --force
           
-          gh label view "documentation" --repo ${{ github.repository }} >/dev/null 2>&1 || \
-            gh label create "documentation" --repo ${{ github.repository }} \
-              --description "Documentation changes" \
-              --color "0075ca"
+          gh label create "documentation" --repo ${{ github.repository }} \
+            --description "Documentation changes" \
+            --color "0075ca" \
+            --force
           
           # Get list of changed files
           LAST_COMMIT="${{ steps.last-check.outputs.last_commit }}"
