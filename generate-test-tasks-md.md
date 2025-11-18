@@ -36,7 +36,7 @@ Before generating tasks, assess the existing test infrastructure to leverage exi
 6. **Test Reporters**: Custom reporting or logging utilities
 
 ### Architectural Patterns Discovery
-1. **Testing Conventions**: Naming patterns (*.test.js, *.spec.ts, *_test.py, etc.)
+1. **Testing Conventions**: Naming patterns (\*.test.js, \*.spec.ts, \*_test.py, etc.)
 2. **Setup/Teardown Patterns**: beforeEach, afterEach, fixtures usage
 3. **Assertion Styles**: expect(), assert(), should() patterns in use
 4. **Async Handling**: Promise, async/await, or callback patterns
