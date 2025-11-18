@@ -1,0 +1,202 @@
+name: Auto-Adapt Upstream Changes
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  auto-adapt:
+    # Only run if issue has upstream-sync label
+    if: contains(github.event.issue.labels.*.name, 'upstream-sync')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Clone upstream repository
+        run: |
+          echo "Cloning upstream repository..."
+          git clone https://github.com/snarktank/ai-dev-tasks.git /tmp/upstream
+          cd /tmp/upstream
+          echo "Upstream cloned successfully"
+      
+      - name: Compute diff range
+        id: diff
+        run: |
+          PREV=$(cat .github/upstream-sync-state | tr -d '\n')
+          echo "Previous commit: $PREV"
+          
+          cd /tmp/upstream
+          LATEST=$(git rev-parse HEAD)
+          echo "Latest commit: $LATEST"
+          
+          echo "PREV=$PREV" >> $GITHUB_ENV
+          echo "LATEST=$LATEST" >> $GITHUB_ENV
+          
+          # Get list of changed files
+          git diff --name-only $PREV..$LATEST > /tmp/changed.txt || echo "No changes or error computing diff"
+          
+          echo "Changed files:"
+          cat /tmp/changed.txt || echo "No changed files"
+          
+          cd -
+      
+      - name: Apply adapters
+        id: adapt
+        run: |
+          echo "Running auto-adapt script..."
+          node .github/scripts/auto-adapt.mjs \
+            --mapping .github/upstream-adaptation.json \
+            --upstream /tmp/upstream \
+            --prev "$PREV" \
+            --latest "$LATEST"
+          
+          echo "Adaptation complete"
+          
+          # Check if summary was created
+          if [ -f /tmp/adaptation-summary.json ]; then
+            echo "Summary created successfully"
+            cat /tmp/adaptation-summary.json
+          fi
+      
+      - name: Update upstream sync state
+        run: |
+          echo "Updating upstream-sync-state to $LATEST"
+          echo "$LATEST" > .github/upstream-sync-state
+      
+      - name: Generate PR description
+        id: pr_desc
+        run: |
+          # Read the adaptation summary
+          if [ -f /tmp/adaptation-summary.json ]; then
+            APPLIED=$(jq -r '.applied | length' /tmp/adaptation-summary.json)
+            SKIPPED=$(jq -r '.skipped | length' /tmp/adaptation-summary.json)
+            UNMAPPED=$(jq -r '.unmapped | length' /tmp/adaptation-summary.json)
+            ERRORS=$(jq -r '.errors | length' /tmp/adaptation-summary.json)
+            COMMIT_RANGE=$(jq -r '.commit_range' /tmp/adaptation-summary.json)
+          else
+            APPLIED=0
+            SKIPPED=0
+            UNMAPPED=0
+            ERRORS=0
+            COMMIT_RANGE="unknown"
+          fi
+          
+          # Create PR body
+          cat > /tmp/pr-body.md << 'EOF'
+          # Auto-Adapted Upstream Changes
+          
+          This PR was automatically generated from upstream sync issue #${{ github.event.issue.number }}.
+          
+          ## Summary
+          
+          - **Upstream Repository**: snarktank/ai-dev-tasks
+          - **Commit Range**: $COMMIT_RANGE
+          - **Adapters Applied**: $APPLIED
+          - **Skipped**: $SKIPPED
+          - **Unmapped Files**: $UNMAPPED
+          - **Errors**: $ERRORS
+          
+          ## Changes Applied
+          
+          EOF
+          
+          if [ -f /tmp/adaptation-summary.json ]; then
+            echo "" >> /tmp/pr-body.md
+            
+            if [ "$APPLIED" -gt 0 ]; then
+              echo "### ✅ Applied Adapters" >> /tmp/pr-body.md
+              jq -r '.applied[]' /tmp/adaptation-summary.json | while read line; do
+                echo "- $line" >> /tmp/pr-body.md
+              done
+              echo "" >> /tmp/pr-body.md
+            fi
+            
+            if [ "$SKIPPED" -gt 0 ]; then
+              echo "### ⏭️ Skipped" >> /tmp/pr-body.md
+              jq -r '.skipped[]' /tmp/adaptation-summary.json | while read line; do
+                echo "- $line" >> /tmp/pr-body.md
+              done
+              echo "" >> /tmp/pr-body.md
+            fi
+            
+            if [ "$UNMAPPED" -gt 0 ]; then
+              echo "### ❓ Unmapped Files (Needs Manual Review)" >> /tmp/pr-body.md
+              echo "The following upstream files were changed but have no mapping configured:" >> /tmp/pr-body.md
+              jq -r '.unmapped[]' /tmp/adaptation-summary.json | while read line; do
+                echo "- $line" >> /tmp/pr-body.md
+              done
+              echo "" >> /tmp/pr-body.md
+            fi
+            
+            if [ "$ERRORS" -gt 0 ]; then
+              echo "### ❌ Errors" >> /tmp/pr-body.md
+              jq -r '.errors[]' /tmp/adaptation-summary.json | while read line; do
+                echo "- $line" >> /tmp/pr-body.md
+              done
+              echo "" >> /tmp/pr-body.md
+            fi
+          fi
+          
+          echo "" >> /tmp/pr-body.md
+          echo "## Review Checklist" >> /tmp/pr-body.md
+          echo "" >> /tmp/pr-body.md
+          echo "- [ ] Review adapted changes for QA context appropriateness" >> /tmp/pr-body.md
+          echo "- [ ] Check unmapped files for relevance to QA workflows" >> /tmp/pr-body.md
+          echo "- [ ] Verify upstream-sync-state update" >> /tmp/pr-body.md
+          echo "- [ ] Run local validation checks" >> /tmp/pr-body.md
+          echo "" >> /tmp/pr-body.md
+          echo "Closes #${{ github.event.issue.number }}" >> /tmp/pr-body.md
+          
+          # Replace variables
+          sed -i "s/\$COMMIT_RANGE/$COMMIT_RANGE/g" /tmp/pr-body.md
+          sed -i "s/\$APPLIED/$APPLIED/g" /tmp/pr-body.md
+          sed -i "s/\$SKIPPED/$SKIPPED/g" /tmp/pr-body.md
+          sed -i "s/\$UNMAPPED/$UNMAPPED/g" /tmp/pr-body.md
+          sed -i "s/\$ERRORS/$ERRORS/g" /tmp/pr-body.md
+          
+          echo "PR description generated:"
+          cat /tmp/pr-body.md
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "docs(workflow): auto-adapt upstream changes from ${{ env.LATEST }}"
+          branch: "auto/upstream-${{ github.event.issue.number }}-${{ github.run_id }}"
+          delete-branch: true
+          title: "Auto-adapt upstream changes (${{ env.LATEST }})"
+          body-path: /tmp/pr-body.md
+          labels: |
+            auto-sync
+            upstream-sync
+            documentation
+          draft: true
+          committer: "GitHub Action <action@github.com>"
+          author: "GitHub Action <action@github.com>"
+      
+      - name: Comment on issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const prBody = fs.readFileSync('/tmp/pr-body.md', 'utf8');
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `🤖 **Automated PR Created**\n\nI've automatically analyzed the upstream changes and created a draft PR with adapted documentation updates.\n\nThe PR includes:\n- Updated upstream-sync-state\n- Applied relevant adapters\n- Summary of changes and unmapped files\n\nPlease review the PR and merge when ready. The PR will automatically close this issue upon merge.`
+            });
