@@ -98,8 +98,8 @@ For new templates in the `/templates` directory:
 - Use clear, descriptive headers
 - Include code blocks with appropriate language tags
 - Use tables for structured data
-- Add emojis sparingly for visual appeal
 - Keep line lengths reasonable (under 120 characters)
+- Avoid using emojis in documentation for consistency and accessibility
 
 ### Code Examples
 ```javascript

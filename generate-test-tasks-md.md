@@ -36,7 +36,7 @@ Before generating tasks, assess the existing test infrastructure to leverage exi
 6. **Test Reporters**: Custom reporting or logging utilities
 
 ### Architectural Patterns Discovery
-1. **Testing Conventions**: Naming patterns (*.test.js, *.spec.ts, *_test.py, etc.)
+1. **Testing Conventions**: Naming patterns (\*.test.js, \*.spec.ts, \*_test.py, etc.)
 2. **Setup/Teardown Patterns**: beforeEach, afterEach, fixtures usage
 3. **Assertion Styles**: expect(), assert(), should() patterns in use
 4. **Async Handling**: Promise, async/await, or callback patterns
@@ -547,6 +547,15 @@ This naming convention provides:
 - **Easy identification** of related documents
 - **Version alignment** across all testing artifacts
 
+## Instructions for Completing Tasks
+
+**IMPORTANT:** As you complete each task, you must check it off in the task list markdown file by changing `- [ ]` to `- [x]`. This helps track progress and ensures you don't skip any steps.
+
+Example:
+- `- [ ] UNIT-H-001: Test authentication components` → `- [x] UNIT-H-001: Test authentication components` (after completing)
+
+Update the file after completing each task, not just after completing an entire category. This provides real-time visibility into testing progress and helps identify blockers early.
+
 ## Usage Instructions
 
 When using this task breakdown:
@@ -554,7 +563,7 @@ When using this task breakdown:
 1. **Customize for Your Context**: Adjust task priorities based on your specific risks and requirements
 2. **Estimate Effort**: Add realistic time estimates based on your team's experience
 3. **Assign Ownership**: Clearly assign each task to specific team members
-4. **Track Progress**: Use project management tools to monitor completion
+4. **Track Progress**: Use project management tools to monitor completion and check off tasks as completed
 5. **Adapt as Needed**: Adjust priorities and scope based on learnings and feedback
 
 This comprehensive task breakdown provides a systematic approach to implementing your test strategy, ensuring nothing critical is missed while maintaining flexibility for your specific context and constraints.
