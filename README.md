@@ -1,6 +1,6 @@
 # AI QA Tasks for Quality Engineering
 
-Welcome to **AI QA Tasks**! This repository provides a collection of markdown files designed to supercharge your quality assurance workflow with AI-powered IDEs and CLIs. Originally inspired by [snarktank/ai-dev-tasks](https://github.com/snarktank/ai-dev-tasks), these tools work with any AI coding assistant including Cursor, Claude Code, Windsurf, Amp, and others.
+Welcome to **AI QA Tasks**! This repository provides a collection of markdown files designed to supercharge your quality assurance workflow with AI-powered IDEs and CLIs. Originally inspired by [snarktank/ai-dev-tasks](https://github.com/snarktank/ai-dev-tasks), these tools work with any AI coding assistant including [Amp](https://ampcode.com), Cursor, Claude Code, Windsurf, and others.
 
 By leveraging these structured prompts, you can systematically approach quality engineering from requirements analysis to comprehensive test automation, with built-in checkpoints for verification. Stop wrestling with ad-hoc testing approaches and start guiding your AI collaborator through structured QA processes!
 
