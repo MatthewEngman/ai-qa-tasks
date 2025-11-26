@@ -1,0 +1,70 @@
+{
+  "upstream_repo": "snarktank/ai-dev-tasks",
+  "upstream_url": "https://github.com/snarktank/ai-dev-tasks.git",
+  "mappings": [
+    {
+      "upstream": "create-prd.md",
+      "local": "create-trd-md.md",
+      "adapters": ["clarifying_questions_format"],
+      "description": "Maps PRD creation to TRD creation workflow"
+    },
+    {
+      "upstream": "generate-tasks.md",
+      "local": "generate-test-tasks-md.md",
+      "adapters": ["checklist_instructions"],
+      "description": "Maps task generation to test task generation workflow"
+    },
+    {
+      "upstream": "README.md",
+      "local": "README.md",
+      "adapters": ["add_amp", "remove_emoji_guidance"],
+      "description": "Main repository documentation"
+    }
+  ],
+  "allowlist": [
+    "*.md",
+    "docs/**/*.md",
+    "examples/**/*.md",
+    "templates/**/*.md",
+    ".github/upstream-sync-state"
+  ],
+  "blocklist": [
+    ".github/workflows/**",
+    "**/*.js",
+    "**/*.json",
+    "**/*.yml",
+    "**/*.yaml"
+  ],
+  "adapters": {
+    "clarifying_questions_format": {
+      "description": "Add structured clarifying questions format to TRD creation",
+      "target_file": "create-trd-md.md",
+      "action": "insert_after_marker",
+      "marker": "## Process",
+      "check_exists": "## Clarifying Questions"
+    },
+    "checklist_instructions": {
+      "description": "Add task completion checklist instructions",
+      "target_file": "generate-test-tasks-md.md",
+      "action": "insert_before_marker",
+      "marker": "## Usage Instructions",
+      "check_exists": "## Instructions for Completing Tasks"
+    },
+    "add_amp": {
+      "description": "Add Amp to list of supported AI coding assistants",
+      "target_file": "README.md",
+      "action": "replace_pattern",
+      "pattern": "Cursor, Claude Code, Windsurf",
+      "replacement": "[Amp](https://ampcode.com), Cursor, Claude Code, Windsurf",
+      "check_exists": "Amp"
+    },
+    "remove_emoji_guidance": {
+      "description": "Update emoji usage guidance for consistency",
+      "target_file": "contributing-guide.md",
+      "action": "replace_pattern",
+      "pattern": "Add emojis sparingly for visual appeal",
+      "replacement": "Avoid using emojis in documentation for consistency and accessibility",
+      "check_exists": "Avoid using emojis"
+    }
+  }
+}
