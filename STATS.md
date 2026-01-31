@@ -1,15 +1,15 @@
 # Repository Statistics
 
-Generated on: Wed Nov 26 00:06:25 UTC 2025
+Generated on: Sat Jan 31 22:02:37 UTC 2026
 
 ## File Counts
 - Workflow files: 5
 - Example files: 3
 - Template files: 4
-- Documentation files: 5
+- Documentation files: 6
 
 ## Content Analysis
-- Total lines of documentation: 3248
+- Total lines of documentation: 3272
 - Code examples: README.md:22
 STATS.md:0
 contributing-guide.md:22
