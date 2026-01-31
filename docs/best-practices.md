@@ -36,6 +36,32 @@
 - Keep templates current; link examples from README
 - Add troubleshooting tips near failing areas
 
+## Working with AI Coding Assistants
+
+### Effective AI Collaboration for Testing
+- Provide complete context about your tech stack, testing requirements, and quality gates
+- Review AI-generated test code for correctness, coverage, and maintainability
+- Use AI as a collaborator, not a replacement for human judgment on test strategy
+- Iterate and refine AI-generated artifacts as starting points, not final products
+
+### AI-Generated Test Validation
+- Verify AI-generated tests actually test what they claim to test
+- Check for edge cases and boundary conditions that AI may miss
+- Ensure test assertions are meaningful and not just checking for "no errors"
+- Validate that mocks and stubs accurately represent real dependencies
+
+### Prompt Engineering for Test Generation
+- Be specific about testing frameworks, patterns, and conventions
+- Include examples of existing tests in your codebase for consistency
+- Specify coverage requirements and quality thresholds upfront
+- Request explanations for complex test logic to verify understanding
+
+### AI Testing Agent Integration
+- Configure AI agents to follow your team's testing conventions
+- Set up guardrails to prevent AI from modifying production code
+- Use traceability to track which tests were AI-generated vs human-written
+- Establish review processes for AI-generated test artifacts
+
 ## Commit Standards for Test Code
 
 ### Conventional Commit Format
