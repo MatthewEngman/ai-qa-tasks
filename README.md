@@ -236,8 +236,32 @@ Got ideas to improve these QA workflows or have new testing approaches? Contribu
 - Submit a pull request with your enhancements
 - Share examples of successful QA implementations
 
+## AI-Assisted Development in 2026
+
+The AI coding landscape has evolved dramatically. What began as autocomplete tools has transformed into deeply integrated engineering partners. Key trends shaping QA workflows include:
+
+- **Agentic AI**: Single agents are evolving into coordinated teams capable of handling complex, multi-step testing workflows
+- **Role Transformation**: Engineers are shifting from implementers to orchestrators, focusing on test strategy while AI handles implementation
+- **AI Testing Agents**: Autonomous systems that can plan, reason, and execute tests with minimal human intervention
+- **Self-Healing Automation**: AI-powered test maintenance that automatically adapts to UI and API changes
+
+For a comprehensive overview of industry trends and their implications for QA, see [AI Industry Trends 2026](docs/ai-industry-trends-2026.md).
+
+### AI Coding Tools Landscape
+
+The repository works with all major AI coding assistants. Current leaders include:
+
+| Tool | Best For | Pricing |
+| ---- | -------- | ------- |
+| Claude Code | Accuracy (80.9% SWE-bench) | $100-200/mo |
+| Cursor 2.0 | IDE Integration | $20/mo |
+| GitHub Copilot Pro+ | Multi-model access | $39/mo |
+| Devin | Defined tasks, migrations | $20/mo+ |
+| Windsurf | Agent with memory | Varies |
+
 ## Additional Resources
 
+- [AI Industry Trends 2026](docs/ai-industry-trends-2026.md)
 - [Testing Best Practices](https://testing-library.com/docs/guiding-principles/)
 - [Test Pyramid Concept](https://martinfowler.com/articles/practical-test-pyramid.html)
 - [Accessibility Testing Guide](https://www.w3.org/WAI/test-evaluate/)
