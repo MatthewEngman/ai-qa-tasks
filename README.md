@@ -65,7 +65,7 @@ Test results directory: [path to your test results]
 Coverage requirements: [your coverage thresholds]
 ```
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 /ai-qa-tasks/
@@ -75,8 +75,8 @@ Coverage requirements: [your coverage thresholds]
 ├── generate-test-tasks-md.md         # Break strategy into implementation tasks
 ├── implement-test-task-md.md         # Execute individual test tasks
 ├── generate-test-report-md.md        # Create coverage and metrics reports
-├── quick-start-guide.md
-├── contributing-guide.md
+├── quick-start-guide.md              # 10-minute getting started guide
+├── contributing-guide.md             # Contribution guidelines
 ├── examples/                         # Example outputs
 │   ├── sample-trd-example.md
 │   ├── sample-test-strategy.md
@@ -86,8 +86,11 @@ Coverage requirements: [your coverage thresholds]
 │   ├── e2e-test-template.md
 │   ├── performance-test-template.md
 │   └── bug-report-template.md
-└── docs/
+└── docs/                             # Guides and references
+    ├── ai-industry-trends-2026.md
+    ├── automation.md
     ├── best-practices.md
+    ├── framework-guides.md
     ├── troubleshooting.md
     └── windsurf-setup.md
 ```
@@ -188,7 +191,7 @@ For more details, see the [Claude Code documentation on memory](https://docs.ant
 - **Iterate on Test Design:** Review and refine test approaches before implementing
 - **Consider All Test Types:** Don't skip any testing layer - each serves a purpose
 - **Plan for Maintenance:** Structure tests for long-term maintainability
-- **Use Capable AI Models:** For best results with complex QA workflows, use advanced AI models (Cursor Pro, Claude Code with Claude 3.5 Sonnet, etc.). Free or basic models may struggle with the structured instructions and comprehensive test generation required for quality assurance work.
+- **Use Capable AI Models:** For best results with complex QA workflows, use advanced AI models (Cursor Pro, Claude Code, GitHub Copilot Pro+, etc.). Free or basic-tier models may struggle with the structured instructions and comprehensive test generation required for quality assurance work.
 
 ## Testing Types Covered
 
@@ -205,17 +208,17 @@ For more details, see the [Claude Code documentation on memory](https://docs.ant
 
 The templates and prompts are designed to work with popular testing frameworks:
 
-**Frontend:** Jest, Vitest, React Testing Library, Vue Test Utils, Cypress, Playwright, WebdriverIO
+**Frontend:** Vitest, Jest, React Testing Library, Vue Test Utils, Playwright, Cypress, WebdriverIO
 
-**Backend:** Jest, Mocha, Chai, Supertest, Newman, Artillery, K6
+**Backend:** Vitest, Jest, Supertest, Mocha, Chai, Newman, Artillery, K6
 
-**Mobile:** Detox, Appium, XCTest, Espresso
+**Mobile:** Detox, Appium, XCTest, Espresso, Maestro
 
-**API:** Postman, Insomnia, REST Assured, Karate
+**API:** Postman, Insomnia, REST Assured, Karate, Bruno
 
-**Performance:** K6, Artillery, JMeter, Lighthouse
+**Performance:** K6, Artillery, JMeter, Lighthouse, autocannon
 
-**Visual:** Percy, Chromatic, BackstopJS
+**Visual:** Percy, Chromatic, BackstopJS, Playwright Visual Comparisons
 
 ## Quality Metrics & Reporting
 
@@ -240,10 +243,10 @@ Got ideas to improve these QA workflows or have new testing approaches? Contribu
 
 The AI coding landscape has evolved dramatically. What began as autocomplete tools has transformed into deeply integrated engineering partners. Key trends shaping QA workflows include:
 
-- **Agentic AI**: Single agents are evolving into coordinated teams capable of handling complex, multi-step testing workflows
+- **Agentic AI**: Single agents are evolving into coordinated teams capable of handling complex, multi-step testing workflows autonomously
 - **Role Transformation**: Engineers are shifting from implementers to orchestrators, focusing on test strategy while AI handles implementation
-- **AI Testing Agents**: Autonomous systems that can plan, reason, and execute tests with minimal human intervention
-- **Self-Healing Automation**: AI-powered test maintenance that automatically adapts to UI and API changes
+- **AI Testing Agents**: Autonomous systems that plan, reason, and execute tests -- 89% of organizations are now piloting or deploying generative AI in quality engineering
+- **Self-Healing Automation**: AI-powered test maintenance that automatically adapts to UI and API changes, reducing maintenance costs by 40-60%
 
 For a comprehensive overview of industry trends and their implications for QA, see [AI Industry Trends 2026](docs/ai-industry-trends-2026.md).
 
@@ -253,11 +256,13 @@ The repository works with all major AI coding assistants. Current leaders includ
 
 | Tool | Best For | Pricing |
 | ---- | -------- | ------- |
-| Claude Code | Accuracy (80.9% SWE-bench) | $100-200/mo |
-| Cursor 2.0 | IDE Integration | $20/mo |
-| GitHub Copilot Pro+ | Multi-model access | $39/mo |
-| Devin | Defined tasks, migrations | $20/mo+ |
-| Windsurf | Agent with memory | Varies |
+| Claude Code | Agentic coding, complex refactors | ~$17-20/mo Pro (usage-based) |
+| Cursor | IDE integration, daily coding UX | $20/mo Pro |
+| GitHub Copilot | Enterprise teams, multi-model access | $10-39/mo |
+| Windsurf | Value-focused agentic IDE | $15/mo Pro |
+| Devin | Defined tasks, migrations | $20/mo + ACU costs |
+| Amp | Collaborative coding agent | Varies |
+| Cline / Roo Code | Open-source, bring-your-own-key | Free + API costs |
 
 ## Additional Resources
 

@@ -1,4 +1,4 @@
-# 🚀 Quick Start Guide
+# Quick Start Guide
 
 Get up and running with AI QA Tasks in 10 minutes! This guide will walk you through your first complete workflow from requirements to test implementation.
 
@@ -22,7 +22,7 @@ Take any requirement document you have - could be a JIRA ticket, user story, or 
 Open your AI assistant and use the first workflow file:
 
 ```
-Use @create-trd.md
+Use @create-trd-md.md
 
 Here's the requirement I want to analyze for testing:
 "Users should be able to register with email and password. Email must be unique and valid format. Password must be at least 8 characters with one number and one special character. After registration, send confirmation email."
@@ -38,7 +38,7 @@ Current testing tools: Jest, React Testing Library, Supertest
 Now create your test strategy:
 
 ```
-Use @generate-test-strategy.md with the TRD from step 2
+Use @generate-test-strategy-md.md with the TRD from step 2
 
 Focus areas: unit, integration, api, e2e
 ```
@@ -50,7 +50,7 @@ Focus areas: unit, integration, api, e2e
 Convert strategy into actionable tasks:
 
 ```
-Use @generate-test-tasks.md with the test strategy from step 3
+Use @generate-test-tasks-md.md with the test strategy from step 3
 ```
 
 **Expected Output:** Prioritized task list with specific implementation steps.
@@ -60,21 +60,21 @@ Use @generate-test-tasks.md with the test strategy from step 3
 Pick the highest priority task and implement it:
 
 ```
-Use @implement-test-task.md
+Use @implement-test-task-md.md
 
 Current task: UNIT-C-001: Test email validation function
 ```
 
 **Expected Output:** Complete test implementation with code examples.
 
-## 🎯 What You'll Have After 10 Minutes
+## What You'll Have After 10 Minutes
 
 - ✅ **Structured Requirements**: Clear, testable requirements document
 - ✅ **Complete Test Strategy**: Comprehensive testing approach across all layers  
 - ✅ **Actionable Task List**: Prioritized implementation roadmap
 - ✅ **Working Test Code**: First test implemented and ready to run
 
-## 💡 Pro Tips for Better Results
+## Pro Tips for Better Results
 
 ### 1. Be Specific About Your Context
 Instead of: *"Test my login feature"*
@@ -94,7 +94,7 @@ Team: 2 developers, 1 QA engineer
 Environment: CI/CD with GitHub Actions
 ```
 
-## 🛠️ Framework-Specific Examples
+## Framework-Specific Examples
 
 ### React + Jest + Testing Library
 ```
@@ -112,12 +112,12 @@ Current setup: Jest with Supertest for API testing
 
 ### Full-Stack Next.js
 ```
-Tech stack: Next.js 13, TypeScript, Prisma, PostgreSQL
-Testing focus: API routes, React components, database operations
-Current setup: Jest with custom configuration for Next.js
+Tech stack: Next.js 16, TypeScript, Drizzle ORM, PostgreSQL
+Testing focus: API routes, React Server Components, database operations
+Current setup: Vitest with Playwright for E2E
 ```
 
-## 🔄 Iterative Improvement
+## Iterative Improvement
 
 After your first workflow:
 
@@ -126,7 +126,7 @@ After your first workflow:
 3. **Customize Templates**: Modify the workflow files for your team's standards
 4. **Build Your Library**: Save successful prompts for future use
 
-## 🚨 Common Gotchas
+## Common Gotchas
 
 ### ❌ Vague Requirements
 ```
@@ -151,7 +151,7 @@ authentication, input validation, and error handling. Include rate limiting
 tests and security validation."
 ```
 
-## 📈 Measuring Success
+## Measuring Success
 
 Track these metrics to see the impact:
 
@@ -160,17 +160,17 @@ Track these metrics to see the impact:
 - **Development Speed**: Time from requirement to tested feature
 - **Team Confidence**: Subjective assessment of release confidence
 
-## 🎮 Try It Right Now!
+## Try It Right Now
 
 Pick any feature you're currently working on and run through this 10-minute workflow. You'll be amazed at how much comprehensive testing guidance you can generate in such a short time!
 
-## 🆘 Need Help?
+## Need Help?
 
 - **Issues with prompts?** Check the examples directory for working examples
 - **Framework not covered?** Adapt the templates to your specific tools
 - **Want to contribute?** Open a PR with your improvements and examples
 
-## 🎯 Next Steps
+## Next Steps
 
 Once you're comfortable with the basic workflow:
 
@@ -181,4 +181,4 @@ Once you're comfortable with the basic workflow:
 
 The goal is to make comprehensive testing as easy as having a conversation with your AI assistant. Start simple, then gradually incorporate more sophisticated testing approaches as you get comfortable with the workflow.
 
-Happy testing! 🧪✨
+Happy testing!

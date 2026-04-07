@@ -1,36 +1,42 @@
 # Testing Best Practices
 
-> Practical standards for durable, scalable test suites.
+> Practical standards for durable, scalable test suites in 2026.
 
 ## Principles
 - Test the contract, not the implementation
 - Prefer deterministic tests; isolate flakiness sources
 - Shift-left: unit/contract tests catch most issues cheaply
+- Shift-right: monitor production and derive tests from real user activity
 - Make failures actionable: clear messages, artifacts, logs
 
 ## Structure
 - Co-locate tests with code for unit/component
 - Dedicated `tests/` for integration/e2e
-- Use test IDs in UI to avoid brittle selectors
+- Use `data-testid` attributes in UI to avoid brittle selectors
+- Adopt Page Object Model or component abstractions for E2E tests
 
 ## Data
 - Seed minimal fixtures; avoid global shared state
-- Generate test data with factories/builders
+- Generate test data with factories/builders (e.g., Faker, Fishery)
 - Clean up after tests; idempotent setups
+- Use Testcontainers for database isolation in integration tests
 
 ## CI
-- Run fast checks on PR (lint, unit)
+- Run fast checks on PR (lint, type-check, unit)
 - Gate merges on reliability metrics, not just pass/fail
 - Parallelize suites; cache dependencies
+- Use sharded test execution for large E2E suites
 
 ## Flakiness
 - Stabilize waits with events, not sleeps
 - Mock only at clear boundaries; avoid over-mocking
 - Record and quarantine flaky tests until fixed
+- Use test retries sparingly and track retry rates as a health metric
 
 ## Security and Privacy
-- Never commit secrets; use CI secrets
+- Never commit secrets; use CI secrets and environment variables
 - Mask PII in logs and test artifacts
+- Run SAST/DAST scans as part of the CI pipeline
 
 ## Documentation
 - Keep templates current; link examples from README
@@ -43,24 +49,28 @@
 - Review AI-generated test code for correctness, coverage, and maintainability
 - Use AI as a collaborator, not a replacement for human judgment on test strategy
 - Iterate and refine AI-generated artifacts as starting points, not final products
+- Budget for AI tool costs ($30-50/month per developer is typical in 2026)
 
 ### AI-Generated Test Validation
 - Verify AI-generated tests actually test what they claim to test
 - Check for edge cases and boundary conditions that AI may miss
 - Ensure test assertions are meaningful and not just checking for "no errors"
 - Validate that mocks and stubs accurately represent real dependencies
+- Watch for hallucinated APIs or non-existent library methods in generated code
 
 ### Prompt Engineering for Test Generation
 - Be specific about testing frameworks, patterns, and conventions
 - Include examples of existing tests in your codebase for consistency
 - Specify coverage requirements and quality thresholds upfront
 - Request explanations for complex test logic to verify understanding
+- Use structured workflow prompts (like the ones in this repository) rather than ad-hoc requests
 
 ### AI Testing Agent Integration
 - Configure AI agents to follow your team's testing conventions
 - Set up guardrails to prevent AI from modifying production code
 - Use traceability to track which tests were AI-generated vs human-written
 - Establish review processes for AI-generated test artifacts
+- Leverage self-healing test capabilities where available to reduce maintenance overhead
 
 ## Commit Standards for Test Code
 
