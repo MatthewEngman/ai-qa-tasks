@@ -2,38 +2,37 @@
 
 This guide provides specific examples and best practices for implementing AI QA Tasks with popular testing frameworks and tech stacks.
 
-## 🔧 Frontend Frameworks
+## Frontend Frameworks
 
-### React + Jest + Testing Library
+### React + Vitest + Testing Library
 
 #### Setup Context for AI
 ```
 Tech Stack Context:
-- React 18 with TypeScript
-- Jest + React Testing Library for component testing
-- Cypress for E2E testing
+- React 19 with TypeScript
+- Vitest + React Testing Library for component testing
+- Playwright for E2E testing
 - React Hook Form for form handling
-- React Query for API state management
-- Styled Components for styling
+- TanStack Query (React Query v5) for API state management
+- Tailwind CSS for styling
 
 Testing Standards:
 - 90% component test coverage
-- Accessibility testing with jest-axe
+- Accessibility testing with vitest-axe
 - User interaction testing (not implementation details)
 - Mock external dependencies
 ```
 
 #### Component Testing Template
 ```javascript
-// Use with @implement-test-task.md
+// Use with @implement-test-task-md.md
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { axe, toHaveNoViolations } from 'jest-axe';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ThemeProvider } from 'styled-components';
+import { axe, toHaveNoViolations } from 'vitest-axe';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { UserRegistrationForm } from './UserRegistrationForm';
-import { theme } from '../theme';
 
 expect.extend(toHaveNoViolations);
 
@@ -44,15 +43,13 @@ const renderWithProviders = (component) => {
   
   return render(
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        {component}
-      </ThemeProvider>
+      {component}
     </QueryClientProvider>
   );
 };
 
 describe('UserRegistrationForm', () => {
-  const mockOnSubmit = jest.fn();
+  const mockOnSubmit = vi.fn();
   
   beforeEach(() => {
     mockOnSubmit.mockClear();
@@ -95,12 +92,12 @@ describe('UserRegistrationForm', () => {
 #### Setup Context for AI
 ```
 Tech Stack Context:
-- Vue 3 with Composition API and TypeScript
+- Vue 3.5 with Composition API and TypeScript
 - Vitest for unit testing
 - Vue Testing Library for component testing
 - Playwright for E2E testing
 - Pinia for state management
-- Vite for build tooling
+- Vite 6 for build tooling
 
 Testing Standards:
 - 85% component test coverage
@@ -111,7 +108,7 @@ Testing Standards:
 
 #### Component Testing Template
 ```javascript
-// Use with @implement-test-task.md
+// Use with @implement-test-task-md.md
 import { render, screen, fireEvent } from '@testing-library/vue';
 import { createTestingPinia } from '@pinia/testing';
 import { describe, it, expect, vi } from 'vitest';
@@ -141,67 +138,68 @@ describe('UserRegistration', () => {
 });
 ```
 
-### Angular + Jasmine + Testing Library
+### Angular + Jest + Testing Library
 
 #### Setup Context for AI
 ```
 Tech Stack Context:
-- Angular 16 with TypeScript
-- Jasmine + Karma for unit testing
+- Angular 19 with TypeScript and Signals
+- Jest (via @angular-builders/jest) for unit testing
 - Angular Testing Library for component testing
-- Protractor/WebDriver for E2E testing
-- NgRx for state management
+- Playwright for E2E testing
+- NgRx SignalStore for state management
 - Angular Material for UI components
 
 Testing Standards:
 - 90% code coverage
 - Test components in isolation with mocked dependencies
-- Test reactive forms validation
-- Test NgRx effects and reducers separately
+- Test reactive forms and signal-based state
+- Test NgRx signal store and effects separately
 ```
 
-## 🛠️ Backend Frameworks
+## Backend Frameworks
 
-### Node.js + Express + Jest + Supertest
+### Node.js + Express + Vitest + Supertest
 
 #### Setup Context for AI
 ```
 Tech Stack Context:
-- Node.js 18 with TypeScript
+- Node.js 22 LTS with TypeScript
 - Express.js REST API
-- PostgreSQL with TypeORM
-- Jest + Supertest for testing
+- PostgreSQL with Drizzle ORM
+- Vitest + Supertest for testing
 - JWT authentication
 - Docker for containerization
 
 Testing Standards:
 - 85% API endpoint coverage
-- Integration tests with test database
+- Integration tests with test database (Testcontainers)
 - Mock external services
 - Test authentication and authorization
-- Performance testing with autocannon
+- Performance testing with autocannon or k6
 ```
 
 #### API Testing Template
 ```javascript
-// Use with @implement-test-task.md
+// Use with @implement-test-task-md.md
 import request from 'supertest';
+import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { app } from '../app';
-import { AppDataSource } from '../database/connection';
-import { User } from '../entities/User';
-import { generateTestToken } from '../utils/testHelpers';
+import { db } from '../database/connection';
+import { users } from '../database/schema';
+import { eq } from 'drizzle-orm';
 
 describe('User Registration API', () => {
   beforeAll(async () => {
-    await AppDataSource.initialize();
+    await db.migrate();
   });
 
   afterAll(async () => {
-    await AppDataSource.destroy();
+    await db.close();
   });
 
   beforeEach(async () => {
-    await AppDataSource.getRepository(User).clear();
+    await db.delete(users);
   });
 
   describe('POST /api/auth/register', () => {
@@ -228,13 +226,11 @@ describe('User Registration API', () => {
     });
 
     it('should prevent duplicate email registration', async () => {
-      // Create first user
       await request(app)
         .post('/api/auth/register')
         .send(validUserData)
         .expect(201);
 
-      // Attempt to register with same email
       const response = await request(app)
         .post('/api/auth/register')
         .send(validUserData)
@@ -268,7 +264,7 @@ Testing Standards:
 
 #### API Testing Template
 ```python
-# Use with @implement-test-task.md
+# Use with @implement-test-task-md.md
 import pytest
 from httpx import AsyncClient
 from fastapi.testclient import TestClient
@@ -331,19 +327,19 @@ class TestUserRegistration:
         assert "email" in response.json()["detail"][0]["loc"]
 ```
 
-## 📱 Mobile Testing
+## Mobile Testing
 
-### React Native + Jest + Detox
+### React Native + Vitest + Detox
 
 #### Setup Context for AI
 ```
 Tech Stack Context:
-- React Native 0.72 with TypeScript
-- Jest for unit testing
+- React Native 0.84 with TypeScript and the New Architecture
+- Vitest for unit testing
 - Detox for E2E testing
 - React Native Testing Library
-- Redux Toolkit for state management
-- Expo for development workflow
+- Zustand for state management
+- Expo SDK 52 for development workflow
 
 Testing Standards:
 - 80% component test coverage
@@ -358,37 +354,38 @@ Testing Standards:
 #### Setup Context for AI
 ```
 Tech Stack Context:
-- Flutter 3.10 with Dart
+- Flutter 3.41 with Dart 3
 - flutter_test for unit and widget testing
 - integration_test for E2E testing
-- Provider for state management
+- Riverpod for state management
 - Dio for HTTP requests
 
 Testing Standards:
 - 85% code coverage
 - Widget tests for UI components
 - Integration tests for user flows
-- Mock HTTP requests
+- Mock HTTP requests with http_mock_adapter
 - Test on multiple screen sizes
+- Golden tests for visual regression
 ```
 
-## 🔄 Full-Stack Integration
+## Full-Stack Integration
 
-### Next.js + Prisma + Playwright
+### Next.js + Drizzle + Playwright
 
 #### Setup Context for AI
 ```
 Tech Stack Context:
-- Next.js 13 with App Router and TypeScript
-- Prisma ORM with PostgreSQL
-- NextAuth.js for authentication
-- Jest for unit testing
+- Next.js 16 with App Router and TypeScript
+- Drizzle ORM with PostgreSQL
+- Auth.js (NextAuth v5) for authentication
+- Vitest for unit testing
 - Playwright for E2E testing
-- Tailwind CSS for styling
+- Tailwind CSS v4 for styling
 
 Testing Standards:
 - 85% coverage for API routes and components
-- Database integration tests with test containers
+- Database integration tests with Testcontainers
 - E2E tests covering complete user journeys
 - Visual regression testing
 - Performance testing with Lighthouse CI
@@ -396,40 +393,45 @@ Testing Standards:
 
 #### Full-Stack Testing Template
 ```javascript
-// API Route Testing
+// API Route Testing (App Router)
 // tests/api/auth/register.test.ts
-import { createMocks } from 'node-mocks-http';
-import handler from '../../../pages/api/auth/register';
-import { prismaMock } from '../../__mocks__/prisma';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { POST } from '../../../app/api/auth/register/route';
+import { db } from '../../../lib/db';
 
-jest.mock('../../../lib/prisma', () => ({
-  __esModule: true,
-  default: prismaMock,
-}));
+vi.mock('../../../lib/db');
 
-describe('/api/auth/register', () => {
+describe('POST /api/auth/register', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('should register a new user', async () => {
-    const { req, res } = createMocks({
+    vi.mocked(db.query.users.findFirst).mockResolvedValue(null);
+    vi.mocked(db.insert).mockReturnValue({
+      values: vi.fn().mockReturnValue({
+        returning: vi.fn().mockResolvedValue([{
+          id: '1',
+          email: 'test@example.com',
+          createdAt: new Date(),
+        }]),
+      }),
+    } as any);
+
+    const request = new Request('http://localhost/api/auth/register', {
       method: 'POST',
-      body: {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
         email: 'test@example.com',
         password: 'SecurePass123!'
-      },
+      }),
     });
 
-    prismaMock.user.findUnique.mockResolvedValue(null);
-    prismaMock.user.create.mockResolvedValue({
-      id: '1',
-      email: 'test@example.com',
-      createdAt: new Date(),
-    });
+    const response = await POST(request);
+    const data = await response.json();
 
-    await handler(req, res);
-
-    expect(res._getStatusCode()).toBe(201);
-    expect(JSON.parse(res._getData())).toMatchObject({
-      user: { id: '1', email: 'test@example.com' }
-    });
+    expect(response.status).toBe(201);
+    expect(data.user).toMatchObject({ id: '1', email: 'test@example.com' });
   });
 });
 
@@ -454,7 +456,7 @@ test.describe('User Registration Flow', () => {
 });
 ```
 
-## 🎯 Testing Strategy by Framework
+## Testing Strategy by Framework
 
 ### SPA Frameworks (React, Vue, Angular)
 - **Unit Tests**: Components, hooks/composables, utilities
@@ -474,7 +476,7 @@ test.describe('User Registration Flow', () => {
 - **E2E Tests**: Complete application flows
 - **Performance Tests**: Core Web Vitals, SSR performance
 
-## 💡 Framework-Specific AI Prompts
+## Framework-Specific AI Prompts
 
 ### For React Projects
 ```
@@ -506,7 +508,7 @@ When implementing E2E tests, focus on:
 - Testing performance and accessibility
 ```
 
-## 🔍 Debugging Common Issues
+## Debugging Common Issues
 
 ### Flaky Tests
 ```javascript
@@ -539,7 +541,7 @@ afterEach(async () => {
 });
 ```
 
-## 📚 Best Practices by Framework
+## Best Practices by Framework
 
 1. **Always include framework context** when using AI QA Tasks
 2. **Specify your testing tools and versions** for accurate code generation

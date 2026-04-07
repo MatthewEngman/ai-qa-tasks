@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing to AI QA Tasks! This repository thrives on community contributions that help improve testing workflows for teams using AI coding assistants.
 
-## 🎯 How You Can Contribute
+## How You Can Contribute
 
 ### 1. **Share Your Testing Workflows**
 - Add framework-specific examples and templates
@@ -26,7 +26,7 @@ Thank you for your interest in contributing to AI QA Tasks! This repository thri
 - AI prompt optimizations for different tools
 - Integration examples with CI/CD platforms
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Fork and Clone
 ```bash
@@ -48,7 +48,7 @@ git checkout -b feature/your-feature-name
 git checkout -b docs/your-improvement
 ```
 
-## 📝 Contribution Types
+## Contribution Types
 
 ### Adding New Workflow Files
 When creating new workflow markdown files:
@@ -92,7 +92,7 @@ For new templates in the `/templates` directory:
 3. **Provide usage examples** for each template
 4. **Follow established naming conventions**
 
-## 🎨 Style Guidelines
+## Style Guidelines
 
 ### Markdown Formatting
 - Use clear, descriptive headers
@@ -131,7 +131,7 @@ it('test email', () => {
 - **Give concrete examples** of expected results
 - **Add usage instructions** for the prompt
 
-## 🧪 Testing Your Contributions
+## Testing Your Contributions
 
 ### Test Workflow Files
 Before submitting new workflow files:
@@ -147,7 +147,7 @@ Before submitting new workflow files:
 3. **Verify links and references** are correct
 4. **Test with different scenarios** to ensure robustness
 
-## 📋 Pull Request Process
+## Pull Request Process
 
 ### Before Submitting
 - [ ] Test your changes thoroughly
@@ -190,7 +190,7 @@ Any additional context or considerations for reviewers.
 3. **Community feedback** welcome on all contributions
 4. **Merge** after approval and passing checks
 
-## 🎯 Contribution Ideas
+## Contribution Ideas
 
 ### High-Impact Contributions
 - **Real-world case studies** showing complete workflow implementations
@@ -211,14 +211,14 @@ Any additional context or considerations for reviewers.
 - **Database testing** strategies
 - **Third-party integration** testing patterns
 
-## 🏆 Recognition
+## Recognition
 
 Contributors will be recognized in:
 - **README.md** contributors section
 - **Release notes** for significant contributions
 - **GitHub discussions** highlighting great contributions
 
-## 💬 Getting Help
+## Getting Help
 
 ### Questions About Contributing?
 - **Open a Discussion** on GitHub for general questions
@@ -231,7 +231,7 @@ Contributors will be recognized in:
 - **Focus on the work**, not the person
 - **Help newcomers** get started with contributing
 
-## 🔄 Staying Updated
+## Staying Updated
 
 ```bash
 # Keep your fork synchronized
@@ -241,7 +241,7 @@ git merge upstream/main
 git push origin main
 ```
 
-## 📊 Contribution Guidelines Checklist
+## Contribution Guidelines Checklist
 
 Before submitting any contribution:
 
@@ -253,7 +253,7 @@ Before submitting any contribution:
 - [ ] **Reference any related issues** in your PR description
 - [ ] **Be responsive to feedback** during the review process
 
-## 📝 Commit Message Standards
+## Commit Message Standards
 
 We follow conventional commit format for consistency and automated changelog generation.
 
@@ -324,7 +324,7 @@ git commit -m "fix(templates): correct API test template syntax" \
 4. **Test locally**: Ensure examples work and links are valid
 5. **Commit with context**: Use conventional format with detailed body
 
-## 🌟 Types of Contributors We're Looking For
+## Types of Contributors We're Looking For
 
 - **QA Engineers** who can share testing best practices
 - **Developers** with experience in test automation
@@ -335,4 +335,4 @@ git commit -m "fix(templates): correct API test template syntax" \
 
 Your contributions help make comprehensive testing more accessible to development teams worldwide. Every improvement, no matter how small, makes a difference!
 
-Thank you for contributing to AI QA Tasks! 🧪✨
+Thank you for contributing to AI QA Tasks!

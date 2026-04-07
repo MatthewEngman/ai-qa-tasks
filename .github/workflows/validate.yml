@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
 
       - name: Install markdown linter
         run: npm install -g markdownlint-cli
@@ -110,7 +110,7 @@ jobs:
       - name: Run spell check (with config)
         continue-on-error: true
         if: hashFiles('.github/typos.toml') != ''
-        uses: crate-ci/typos@master
+        uses: crate-ci/typos@v1
         with:
           config: .github/typos.toml
 
@@ -118,7 +118,7 @@ jobs:
       - name: Run spell check (default)
         continue-on-error: true
         if: hashFiles('.github/typos.toml') == ''
-        uses: crate-ci/typos@master
+        uses: crate-ci/typos@v1
 
   validate-examples:
     runs-on: ubuntu-latest
@@ -131,7 +131,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
 
       # Basic check that JavaScript code blocks exist and are non-empty.
       # Note: Node does not support a "syntax check only" flag out of the box.
@@ -186,9 +186,8 @@ jobs:
           echo "" >> STATS.md
           echo "## Content Analysis" >> STATS.md
           echo "- Total lines of documentation: $(cat *.md | wc -l)" >> STATS.md
-          # Count fenced code blocks (literal backticks)
-          echo "- Code examples: $(grep -c '```' *.md)" >> STATS.md
-          echo "- Testing frameworks mentioned: $(grep -i -o 'jest\|cypress\|playwright\|vitest\|mocha' *.md | sort -u | wc -l)" >> STATS.md
+          echo "- Code examples: $(grep -c '```' *.md | awk -F: '{s+=$NF}END{print s}')" >> STATS.md
+          echo "- Testing frameworks mentioned: $(grep -i -o -h 'jest\|cypress\|playwright\|vitest\|mocha\|supertest\|k6\|artillery\|detox\|appium\|selenium' *.md docs/*.md | sort -u | wc -l)" >> STATS.md
 
       - name: Commit statistics
         env:
